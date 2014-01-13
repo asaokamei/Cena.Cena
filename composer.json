@@ -10,4 +10,9 @@
     "minimum-stability": "dev",
     "require": {
     }
+    "autoload":{
+        "psr-4": {
+            "Cena\\Cena":"src/"
+        }
+    }
 }
