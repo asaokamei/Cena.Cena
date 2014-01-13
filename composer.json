@@ -1,5 +1,5 @@
 {
-    "name": "cena/cena",
+    "name": "cena\\cena",
     "description": "Composite Entity Notation and Augmentation for PHP.",
     "authors": [
         {
