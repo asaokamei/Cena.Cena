@@ -1,0 +1,13 @@
+{
+    "name": "asaokamei/cena.cena",
+    "description": "Composite Entity Notation and Augmentation for PHP.",
+    "authors": [
+        {
+            "name": "Asao",
+            "email": "kamei@workspot.jp"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+    }
+}
