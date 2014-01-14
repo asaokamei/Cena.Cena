@@ -1,12 +1,10 @@
 <?php
-namespace WScore\Cena\EmAdapter;
-
-use WScore\Cena\EntityMap;
+namespace Cena\Cena;
 
 interface EmAdapterInterface
 {
     /**
-     * @param EntityMap $map
+     * @param array $map
      * @return mixed
      */
     public function setEntityMap( $map );
@@ -46,18 +44,6 @@ interface EmAdapterInterface
      * @return null|object
      */
     public function findEntity( $class, $id );
-
-    /**
-     * @param object $entity
-     * @return mixed
-     */
-    public function getId( $entity );
-
-    /**
-     * @param object $entity
-     * @return mixed
-     */
-    public function getIdName( $entity );
 
     /**
      * returns if the $entity object is marked as delete.
