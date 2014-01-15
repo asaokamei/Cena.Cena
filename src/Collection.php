@@ -36,11 +36,35 @@ class Collection
     }
 
     /**
-     * @param object $entity
+     * @param object|string $entity
+     * @throws \RuntimeException
      * @return bool
      */
     public function exists( $entity )
     {
-        return array_key_exists( spl_object_hash( $entity ), $this->entityCena );
+        if( is_string( $entity ) ) {
+            return array_key_exists( $entity, $this->cenaEntities );
+        } elseif( is_object( $entity ) ) {
+            return array_key_exists( spl_object_hash( $entity ), $this->entityCena );
+        }
+        throw new \RuntimeException( 'parameter must be a cenaID or an entity object. ' );
     }
+
+    /**
+     * @param object|string $entity
+     */
+    public function remove( $entity )
+    {
+        if( !$this->exists( $entity ) ) return;
+        if( is_string( $entity ) ) {
+            $cenaId = $entity;
+            $entity = $this->cenaEntities[ $cenaId ];
+            $objId  = spl_object_hash( $entity );
+        } else {
+            $objId  = spl_object_hash( $entity );
+            $cenaId = $this->entityCena[ $objId ];
+        }
+        unset( $this->cenaEntities[ $cenaId ] );
+        unset( $this->entityCena[ $objId ] );
+    } 
 }

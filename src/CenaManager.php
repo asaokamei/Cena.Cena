@@ -64,7 +64,7 @@ class CenaManager
         }
         $this->modelClass[ $model ] = $class;
     }
-        
+
     /**
      * get class name from model name.
      * 
