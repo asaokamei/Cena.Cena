@@ -13,6 +13,11 @@ class CenaManager
     protected $new_id = 1;
 
     /**
+     * @var Composition
+     */
+    protected $composer;
+    
+    /**
      * @var \Cena\Cena\EmAdapterInterface
      */
     protected $ema;
@@ -34,10 +39,20 @@ class CenaManager
      * @var array
      */
     protected $modelClass = array();
+    
+    /**
+     * @param Composition $composer
+     */
+    public function __construct( $composer )
+    {
+        $composer->setCenaManager( $this );
+        $this->composer = $composer;
+    }
+
     /**
      * @param EmAdapterInterface $ema
      */
-    public function __construct( $ema )
+    public function setEntityManager( $ema )
     {
         $this->ema = $ema;
     }
@@ -73,29 +88,7 @@ class CenaManager
         }
         $this->modelClass[ $model ] = $class;
     }
-    
-    /**
-     * @param $model
-     * @param $type
-     * @param $id
-     * @return string
-     */
-    public function composeCenaId( $model, $type, $id )
-    {
-        return "{$model}.{$type}.{$id}";
-    }
-
-    /**
-     * @param $cenaId
-     * @return array
-     */
-    public function deComposeCenaId( $cenaId )
-    {
-        $list = explode( '.', $cenaId );
-        $list = rsort( $list );
-        return array( $list[0], $list[1], $list[2] );
-    }
-    
+        
     /**
      * get class name from model name.
      * 
@@ -116,7 +109,7 @@ class CenaManager
         if( $entity = $this->retrieve( $cenaId ) ) {
             return $entity;
         }
-        list( $model, $type, $id ) = $this->deComposeCenaId( $cenaId );
+        list( $model, $type, $id ) = $this->composer->deComposeCenaId( $cenaId );
         if( $type === self::TYPE_NEW ) {
             return $this->newEntity( $model, $id );
         }
@@ -135,7 +128,7 @@ class CenaManager
         }
         $class  = $this->getClass( $model );
         $entity = $this->ema->newEntity( $class );
-        $cenaId = $this->composeCenaId( $model, self::TYPE_NEW, $id );
+        $cenaId = $this->composer->composeCenaId( $model, self::TYPE_NEW, $id );
         $this->new_id = $id + 1;
         $this->register( $cenaId, $entity );
         return $entity;
@@ -150,7 +143,7 @@ class CenaManager
     {
         $class  = $this->getClass( $model );
         $entity = $this->ema->findEntity( $class, $id );
-        $cenaId = $this->composeCenaId( $model, self::TYPE_GET, $id );
+        $cenaId = $this->composer->composeCenaId( $model, self::TYPE_GET, $id );
         $this->register( $cenaId, $entity );
         return $entity;
     }
