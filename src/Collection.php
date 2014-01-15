@@ -1,7 +1,9 @@
 <?php
 namespace Cena\Cena;
 
-class Collection
+use Traversable;
+
+class Collection implements \ArrayAccess, \Countable, \IteratorAggregate
 {
     /**
      * get object from cenaId [ cena-id => object ]
@@ -66,5 +68,69 @@ class Collection
         }
         unset( $this->cenaEntities[ $cenaId ] );
         unset( $this->entityCena[ $objId ] );
-    } 
+    }
+
+    // +----------------------------------------------------------------------+
+    //  for ArrayAccess and Iterator. 
+    // +----------------------------------------------------------------------+
+    /**
+     * Retrieve an external iterator
+     * @return Traversable
+     */
+    public function getIterator()
+    {
+        return new \ArrayIterator( $this->cenaEntities );
+    }
+
+    /**
+     * Whether a offset exists
+     * @param mixed $offset  An offset to check for.
+     * @return boolean       true on success or false on failure.
+     */
+    public function offsetExists( $offset )
+    {
+        return $this->exists( $offset );
+    }
+
+    /**
+     * Offset to retrieve
+     * @param mixed $offset  The offset to retrieve.
+     * @return mixed         Can return all value types.
+     */
+    public function offsetGet( $offset )
+    {
+        return $this->retrieve( $offset );
+    }
+
+    /**
+     * Offset to set
+     *
+     * @param mixed $offset  The offset to assign the value to.
+     * @param mixed $value   The value to set.
+     * @return void
+     */
+    public function offsetSet( $offset, $value )
+    {
+        $this->register( $offset, $value );
+    }
+
+    /**
+     * Offset to unset
+     * @param mixed $offset  The offset to unset.
+     * @return void
+     */
+    public function offsetUnset( $offset )
+    {
+        $this->remove( $offset );
+    }
+
+    /**
+     * Count elements of an object
+     * @return int   The custom count as an integer.
+     */
+    public function count()
+    {
+        return count( $this->cenaEntities );
+    }
+    // +----------------------------------------------------------------------+
 }
