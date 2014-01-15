@@ -1,8 +1,6 @@
 <?php
 namespace Cena\Cena;
 
-use Cena\Cena\EmAdapterInterface;
-
 class CenaManager
 {
     const TYPE_NEW = '0';
@@ -15,18 +13,65 @@ class CenaManager
     protected $new_id = 1;
 
     /**
-     * @var EmAdapterInterface
+     * @var \Cena\Cena\EmAdapterInterface
      */
     protected $ema;
-
+    
+    /**
+     * get object from cenaId [ cena-id => object ]
+     * @var object[]
+     */
     protected $cenaEntities = array();
 
+    /**
+     * get cenaId from object hash [ object-hash => cena-id ]
+     * @var string[]
+     */
+    protected $entityCena = array();
+
+    /**
+     * convert model to class name [model => class]
+     * @var array
+     */
+    protected $modelClass = array();
     /**
      * @param EmAdapterInterface $ema
      */
     public function __construct( $ema )
     {
         $this->ema = $ema;
+    }
+
+    /**
+     * @param string $cenaId
+     * @param object $entity
+     */
+    public function register( $cenaId, $entity )
+    {
+        $this->cenaEntities[ $cenaId ] = $entity;
+        $this->entityCena[ spl_object_hash( $entity ) ] = $cenaId;
+    }
+
+    /**
+     * @param $cenaId
+     * @return null|object
+     */
+    public function retrieve( $cenaId )
+    {
+        return array_key_exists( $cenaId, $this->cenaEntities ) ? $this->cenaEntities[$cenaId] : null; 
+    }
+
+    /**
+     * set model/class relation. 
+     * @param string      $class
+     * @param null|string $model
+     */
+    public function setClass( $class, $model=null )
+    {
+        if( !$model ) {
+            $model = substr( $class, stripos( $class, '\\' )+1 );
+        }
+        $this->modelClass[ $model ] = $class;
     }
     
     /**
@@ -35,7 +80,7 @@ class CenaManager
      * @param $id
      * @return string
      */
-    public function getCenaId( $model, $type, $id )
+    public function composeCenaId( $model, $type, $id )
     {
         return "{$model}.{$type}.{$id}";
     }
@@ -44,7 +89,7 @@ class CenaManager
      * @param $cenaId
      * @return array
      */
-    public function deCompose( $cenaId )
+    public function deComposeCenaId( $cenaId )
     {
         $list = explode( '.', $cenaId );
         $list = rsort( $list );
@@ -55,11 +100,11 @@ class CenaManager
      * get class name from model name.
      * 
      * @param $model
-     * @return mixed
+     * @return string
      */
     public function getClass( $model ) 
     {
-        return $model;
+        return isset( $this->modelClass[$model] ) ? $this->modelClass[$model]: $model;
     }
 
     /**
@@ -68,12 +113,14 @@ class CenaManager
      */
     public function fetch( $cenaId )
     {
-        list( $model, $type, $id ) = $this->deCompose( $cenaId );
+        if( $entity = $this->retrieve( $cenaId ) ) {
+            return $entity;
+        }
+        list( $model, $type, $id ) = $this->deComposeCenaId( $cenaId );
         if( $type === self::TYPE_NEW ) {
             return $this->newEntity( $model, $id );
-        } else {
-            return $this->getEntity( $model, $id );
         }
+        return $this->getEntity( $model, $id );
     }
 
     /**
@@ -88,9 +135,9 @@ class CenaManager
         }
         $class  = $this->getClass( $model );
         $entity = $this->ema->newEntity( $class );
-        $cenaId = $this->getCenaId( $model, '0', $id );
+        $cenaId = $this->composeCenaId( $model, self::TYPE_NEW, $id );
         $this->new_id = $id + 1;
-        $this->cenaEntities[ $cenaId ] = $entity;
+        $this->register( $cenaId, $entity );
         return $entity;
     }
 
@@ -102,9 +149,9 @@ class CenaManager
     public function getEntity( $model, $id )
     {
         $class  = $this->getClass( $model );
-        $entity = $this->ema->newEntity( $class, $id );
-        $cenaId = $this->getCenaId( $model, '1', $id );
-        $this->cenaEntities[ $cenaId ] = $entity;
+        $entity = $this->ema->findEntity( $class, $id );
+        $cenaId = $this->composeCenaId( $model, self::TYPE_GET, $id );
+        $this->register( $cenaId, $entity );
         return $entity;
     }
 
