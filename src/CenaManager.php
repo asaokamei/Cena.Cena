@@ -132,4 +132,9 @@ class CenaManager
     {
         $this->ema->loadData( $entity, $data );
     }
+    
+    public function cenaId( $entity )
+    {
+        return $this->collection->findCenaId( $entity );
+    }
 }

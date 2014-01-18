@@ -38,6 +38,18 @@ class Collection implements \ArrayAccess, \Countable, \IteratorAggregate
     }
 
     /**
+     * @param $entity
+     * @return null|string
+     */
+    public function findCenaId( $entity )
+    {
+        if( array_key_exists( spl_object_hash( $entity ), $this->entityCena ) ) {
+            return $this->entityCena[ spl_object_hash( $entity ) ];
+        }
+        return null;
+    }
+
+    /**
      * @param object|string $entity
      * @throws \RuntimeException
      * @return bool
