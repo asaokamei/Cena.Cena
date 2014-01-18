@@ -60,7 +60,7 @@ class CenaManager
     public function setClass( $class, $model=null )
     {
         if( !$model ) {
-            $model = substr( $class, stripos( $class, '\\' )+1 );
+            $model = substr( $class, strrpos( $class, '\\' )+1 );
         }
         $this->modelClass[ $model ] = $class;
     }
