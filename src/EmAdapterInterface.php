@@ -4,12 +4,6 @@ namespace Cena\Cena;
 interface EmAdapterInterface
 {
     /**
-     * @param array $map
-     * @return mixed
-     */
-    public function setEntityMap( $map );
-
-    /**
      * @return mixed
      */
     public function em();
