@@ -53,6 +53,14 @@ class CenaManager
     }
 
     /**
+     * @return EmAdapterInterface
+     */
+    public function getEntityManager()
+    {
+        return $this->ema;
+    }
+
+    /**
      * set model/class relation. 
      * @param string      $class
      * @param null|string $model
@@ -132,9 +140,23 @@ class CenaManager
     {
         $this->ema->loadData( $entity, $data );
     }
-    
+
+    /**
+     * get cenaID from an entity object.
+     *
+     * @param $entity
+     * @return null|string
+     */
     public function cenaId( $entity )
     {
         return $this->collection->findCenaId( $entity );
+    }
+
+    /**
+     * saves entities to database via EmAdapter.
+     */
+    public function save()
+    {
+        $this->ema->save();
     }
 }
