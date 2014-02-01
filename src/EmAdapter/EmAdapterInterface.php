@@ -28,10 +28,28 @@ interface EmAdapterInterface
     public function findEntity( $class, $id );
 
     /**
+     * get id value of the entity.
+     * 
      * @param object $entity
      * @return string
      */
     public function getId( $entity );
+
+    /**
+     * get list of fields in an entity. 
+     * 
+     * @param object $entity
+     * @return array
+     */
+    public function getFieldList( $entity );
+
+    /**
+     * get list of fields in an entity.
+     *
+     * @param object $entity
+     * @return array
+     */
+    public function getRelationList( $entity );
 
     /**
      * returns if the $entity object is marked as delete.
