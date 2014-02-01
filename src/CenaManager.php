@@ -9,9 +9,6 @@ class CenaManager
     /** @var string  */
     public $cena = 'Cena';
     
-    /** @var int  */
-    protected $new_id = 1;
-
     /**
      * @var Composition
      */
@@ -118,7 +115,7 @@ class CenaManager
             $id   = $this->getId( $entity );
         } else {
             $type = self::TYPE_NEW;
-            $id   = $this->getNewId();
+            $id   = $this->composer->getNewId();
         }
         $model = $this->getModel( get_class( $entity ) );
         $cenaId = $this->composer->composeCenaId( $model, $type, $id );
@@ -134,19 +131,6 @@ class CenaManager
     {
         $id = $this->ema->getId( $entity );
         $id = $this->composer->composeId( $id );
-        return $id;
-    }
-
-    /**
-     * @param null $id
-     * @return int|null
-     */
-    protected function getNewId( $id=null )
-    {
-        if( !$id ) {
-            $id = $this->new_id;
-        }
-        $this->new_id = $id + 1;
         return $id;
     }
     
@@ -173,7 +157,7 @@ class CenaManager
      */
     public function newEntity( $model, $id=null )
     {
-        $id     = $this->getNewId( $id );
+        $id     = $this->composer->getNewId( $id );
         $class  = $this->getClass( $model );
         $entity = $this->ema->newEntity( $class );
         $cenaId = $this->composer->composeCenaId( $model, self::TYPE_NEW, $id );

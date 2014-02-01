@@ -17,6 +17,11 @@ class Composition
      * @var string
      */
     public $splitId = '+';
+
+    /**
+     * @var int
+     */
+    protected $new_id = 1;
     
     /**
      * @param CenaManager $cm
@@ -58,5 +63,18 @@ class Composition
             return $id;
         }
         return implode( $this->splitId, $id );
+    }
+
+    /**
+     * @param null $id
+     * @return int|null
+     */
+    public function getNewId( $id=null )
+    {
+        if( !$id ) {
+            $id = $this->new_id;
+        }
+        $this->new_id = $id + 1;
+        return $id;
     }
 }
