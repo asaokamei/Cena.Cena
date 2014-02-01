@@ -161,7 +161,7 @@ class CenaManager
         $class  = $this->getClass( $model );
         $entity = $this->ema->newEntity( $class );
         $cenaId = $this->composer->composeCenaId( $model, self::TYPE_NEW, $id );
-        $this->collection->register( $cenaId, $entity );
+        $this->register( $entity, $cenaId );
         return $entity;
     }
 
@@ -175,7 +175,7 @@ class CenaManager
         $class  = $this->getClass( $model );
         $entity = $this->ema->findEntity( $class, $id );
         $cenaId = $this->composer->composeCenaId( $model, self::TYPE_GET, $id );
-        $this->collection->register( $cenaId, $entity );
+        $this->register( $entity, $cenaId );
         return $entity;
     }
 
