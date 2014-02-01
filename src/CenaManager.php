@@ -173,13 +173,10 @@ class CenaManager
      */
     public function newEntity( $model, $id=null )
     {
-        if( !$id ) {
-            $id = $this->new_id;
-        }
+        $id     = $this->getNewId( $id );
         $class  = $this->getClass( $model );
         $entity = $this->ema->newEntity( $class );
         $cenaId = $this->composer->composeCenaId( $model, self::TYPE_NEW, $id );
-        $this->new_id = $id + 1;
         $this->collection->register( $cenaId, $entity );
         return $entity;
     }
