@@ -30,7 +30,7 @@ class Process
             {
                 foreach( $ids as $id => $info ) 
                 {
-                    $cenaID = $this->cm->composeCenaId( $model, $type, $id );
+                    $cenaID = $this->cm->getComposer()->composeCenaId( $model, $type, $id );
                     $data[ $cenaID ] = $info;
                 }
             }

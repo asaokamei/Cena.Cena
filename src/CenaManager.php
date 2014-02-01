@@ -30,12 +30,6 @@ class CenaManager
     protected $ema;
     
     /**
-     * convert model to class name [model => class]
-     * @var array
-     */
-    protected $modelClass = array();
-
-    /**
      * @var ClassMap
      */
     protected $classMap;
@@ -67,6 +61,14 @@ class CenaManager
     public function getEntityManager()
     {
         return $this->ema;
+    }
+
+    /**
+     * @return Composition
+     */
+    public function getComposer()
+    {
+        return $this->composer;
     }
 
     /**
