@@ -20,13 +20,18 @@ interface EmAdapterInterface
      */
     public function newEntity( $class, $data=array() );
 
-
     /**
      * @param $class
      * @param $id
      * @return null|object
      */
     public function findEntity( $class, $id );
+
+    /**
+     * @param object $entity
+     * @return string
+     */
+    public function getId( $entity );
 
     /**
      * returns if the $entity object is marked as delete.

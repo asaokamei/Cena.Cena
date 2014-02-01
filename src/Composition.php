@@ -12,6 +12,11 @@ class Composition
      * @var string
      */
     public $connector = '.';
+
+    /**
+     * @var string
+     */
+    public $splitId = '+';
     
     /**
      * @param CenaManager $cm
@@ -43,4 +48,15 @@ class Composition
         return array( $list[0], $list[1], $list[2] );
     }
 
+    /**
+     * @param string|array $id
+     * @return string
+     */
+    public function composeId( $id )
+    {
+        if( is_string( $id ) ) {
+            return $id;
+        }
+        return implode( $this->splitId, $id );
+    }
 }

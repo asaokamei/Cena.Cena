@@ -85,6 +85,72 @@ class CenaManager
     }
 
     /**
+     * @param $class
+     * @return int|string
+     * @throws \RuntimeException
+     */
+    public function getModel( $class )
+    {
+        if( !in_array( $class, $this->modelClass ) ) {
+            throw new \RuntimeException( "Cannot find model for class: " . $class );
+        }
+        foreach( $this->modelClass as $model => $className ) {
+            if( $class === $className ) {
+                return $model;
+            }
+        }
+        throw new \RuntimeException( "Cannot find model for class 2: " . $class );
+    }
+
+    /**
+     * @param object      $entity
+     * @param null|string $cenaId
+     * @return string
+     */
+    public function register( $entity, $cenaId=null )
+    {
+        if( $cenaId ) {
+            $this->collection->register( $cenaId, $entity );
+            return $cenaId;
+        }
+        if( $this->ema->isRetrieved( $entity ) ) {
+            $type = self::TYPE_GET;
+            $id   = $this->getId( $entity );
+        } else {
+            $type = self::TYPE_NEW;
+            $id   = $this->getNewId();
+        }
+        $model = $this->getModel( get_class( $entity ) );
+        $cenaId = $this->composer->composeCenaId( $model, $type, $id );
+        $this->collection->register( $cenaId, $entity );
+        return $cenaId;
+    }
+
+    /**
+     * @param $entity
+     * @return string
+     */
+    public function getId( $entity )
+    {
+        $id = $this->ema->getId( $entity );
+        $id = $this->composer->composeId( $id );
+        return $id;
+    }
+
+    /**
+     * @param null $id
+     * @return int|null
+     */
+    protected function getNewId( $id=null )
+    {
+        if( !$id ) {
+            $id = $this->new_id;
+        }
+        $this->new_id = $id + 1;
+        return $id;
+    }
+    
+    /**
      * @param $cenaId
      * @return object
      */
