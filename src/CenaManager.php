@@ -19,7 +19,7 @@ class CenaManager
     protected $composer;
 
     /**
-     * @var Utils\Collection
+     * @var Collection
      */
     protected $collection;
     
