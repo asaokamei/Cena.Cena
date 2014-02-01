@@ -1,5 +1,7 @@
 <?php
-namespace Cena\Cena;
+namespace Cena\Cena\Utils;
+
+use Cena\Cena\CenaManager;
 
 class Composition
 {

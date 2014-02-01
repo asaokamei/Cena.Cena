@@ -1,6 +1,10 @@
 <?php
 namespace Cena\Cena;
 
+use Cena\Cena\EmAdapter\EmAdapterInterface;
+use Cena\Cena\Utils\Composition;
+use Cena\Cena\Utils\Collection;
+
 class CenaManager
 {
     const TYPE_NEW = '0';
@@ -15,12 +19,12 @@ class CenaManager
     protected $composer;
 
     /**
-     * @var Collection
+     * @var Utils\Collection
      */
     protected $collection;
     
     /**
-     * @var \Cena\Cena\EmAdapterInterface
+     * @var EmAdapterInterface
      */
     protected $ema;
     

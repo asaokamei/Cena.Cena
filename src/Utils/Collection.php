@@ -1,5 +1,5 @@
 <?php
-namespace Cena\Cena;
+namespace Cena\Cena\Utils;
 
 use Traversable;
 
