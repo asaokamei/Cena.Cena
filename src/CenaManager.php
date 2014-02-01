@@ -2,6 +2,7 @@
 namespace Cena\Cena;
 
 use Cena\Cena\EmAdapter\EmAdapterInterface;
+use Cena\Cena\Utils\ClassMap;
 use Cena\Cena\Utils\Composition;
 use Cena\Cena\Utils\Collection;
 
@@ -35,14 +36,21 @@ class CenaManager
     protected $modelClass = array();
 
     /**
+     * @var ClassMap
+     */
+    protected $classMap;
+
+    /**
      * @param Composition $composer
      * @param Collection  $collection
+     * @param ClassMap    $classMap
      */
-    public function __construct( $composer, $collection )
+    public function __construct( $composer, $collection, $classMap )
     {
         $composer->setCenaManager( $this );
-        $this->composer = $composer;
+        $this->composer   = $composer;
         $this->collection = $collection;
+        $this->classMap   = $classMap;
     }
 
     /**
@@ -68,39 +76,7 @@ class CenaManager
      */
     public function setClass( $class, $model=null )
     {
-        if( !$model ) {
-            $model = substr( $class, strrpos( $class, '\\' )+1 );
-        }
-        $this->modelClass[ $model ] = $class;
-    }
-
-    /**
-     * get class name from model name.
-     * 
-     * @param $model
-     * @return string
-     */
-    public function getClass( $model ) 
-    {
-        return isset( $this->modelClass[$model] ) ? $this->modelClass[$model]: $model;
-    }
-
-    /**
-     * @param $class
-     * @return int|string
-     * @throws \RuntimeException
-     */
-    public function getModel( $class )
-    {
-        if( !in_array( $class, $this->modelClass ) ) {
-            throw new \RuntimeException( "Cannot find model for class: " . $class );
-        }
-        foreach( $this->modelClass as $model => $className ) {
-            if( $class === $className ) {
-                return $model;
-            }
-        }
-        throw new \RuntimeException( "Cannot find model for class 2: " . $class );
+        $this->classMap->setClass( $class, $model );
     }
 
     /**
@@ -121,7 +97,7 @@ class CenaManager
             $type = self::TYPE_NEW;
             $id   = $this->composer->getNewId();
         }
-        $model = $this->getModel( get_class( $entity ) );
+        $model = $this->classMap->getModel( get_class( $entity ) );
         $cenaId = $this->composer->composeCenaId( $model, $type, $id );
         $this->collection->register( $cenaId, $entity );
         return $cenaId;
@@ -162,7 +138,7 @@ class CenaManager
     public function newEntity( $model, $id=null )
     {
         $id     = $this->composer->getNewId( $id );
-        $class  = $this->getClass( $model );
+        $class  = $this->classMap->getClass( $model );
         $entity = $this->ema->newEntity( $class );
         $cenaId = $this->composer->composeCenaId( $model, self::TYPE_NEW, $id );
         $this->register( $entity, $cenaId );
@@ -176,7 +152,7 @@ class CenaManager
      */
     public function getEntity( $model, $id )
     {
-        $class  = $this->getClass( $model );
+        $class  = $this->classMap->getClass( $model );
         $entity = $this->ema->findEntity( $class, $id );
         $cenaId = $this->composer->composeCenaId( $model, self::TYPE_GET, $id );
         $this->register( $entity, $cenaId );
