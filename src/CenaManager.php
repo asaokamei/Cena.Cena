@@ -188,4 +188,19 @@ class CenaManager
     {
         $this->ema->save();
     }
+
+    /**
+     * makes name for html form elements
+     * 
+     * @param object $entity
+     * @param string $name
+     * @param string $type
+     * @return string
+     */
+    public function formName( $entity, $name, $type='prop' )
+    {
+        $cenaId = $this->collection->findCenaId( $entity );
+        $name   = $this->composer->makeFormName( $cenaId, $type, $name );
+        return $name;
+    }
 }
