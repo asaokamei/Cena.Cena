@@ -32,6 +32,15 @@ class Composition_UnitTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
+    function composeCenaId_makes_the_id()
+    {
+        $id = $this->c->composeCenaId( 'model', 'type', 'id' );
+        $this->assertEquals( 'model.type.id', $id );
+    }
+    
+    /**
+     * @test
+     */
     function deComposeCenaID_splits_to_list()
     {
         $list = $this->c->deComposeCenaId( 'test.1.2' );
@@ -47,5 +56,31 @@ class Composition_UnitTest extends \PHPUnit_Framework_TestCase
     {
         $name = $this->c->makeFormName( 'test.0.2', 'prop', 'id' );
         $this->assertEquals( 'Cena[test][0][2][prop][id]', $name );
+    }
+
+    /**
+     * @test
+     */
+    function getNewId_return_sequence_of_int()
+    {
+        $id1 = $this->c->getNewId();
+        $id2 = $this->c->getNewId();
+        $id3 = $this->c->getNewId();
+        $this->assertEquals( '1', $id1 );
+        $this->assertEquals( '2', $id2 );
+        $this->assertEquals( '3', $id3 );
+    }
+
+    /**
+     * @test
+     */
+    function getNewId_with_id_resets_to_the_id()
+    {
+        $id1 = $this->c->getNewId();
+        $id2 = $this->c->getNewId(5);
+        $id3 = $this->c->getNewId();
+        $this->assertEquals( '1', $id1 );
+        $this->assertEquals( '5', $id2 );
+        $this->assertEquals( '6', $id3 );
     }
 }
