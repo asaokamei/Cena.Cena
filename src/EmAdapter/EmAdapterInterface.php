@@ -82,7 +82,7 @@ interface EmAdapterInterface
      * @param array $data
      * @return mixed
      */
-    public function loadData( $entity, $data );
+    public function assign( $entity, $data );
 
     /**
      * relate $entity with $target object by $name relation.

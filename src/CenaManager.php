@@ -167,7 +167,7 @@ class CenaManager
      */
     public function assign( $entity, $data )
     {
-        $this->ema->loadData( $entity, $data );
+        $this->ema->assign( $entity, $data );
     }
 
     /**
