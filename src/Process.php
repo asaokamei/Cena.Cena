@@ -9,7 +9,10 @@ class Process
     protected $cm;
     
     protected $source = array();
-    
+
+    /**
+     * @param array $source
+     */
     public function setSource( $source )
     {
         $this->source = $source;
