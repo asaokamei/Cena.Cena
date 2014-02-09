@@ -41,6 +41,7 @@ class Composition
      */
     public function composeCenaId( $model, $type, $id )
     {
+        $model = strtolower( $model );
         return implode( $this->connector, array( $model, $type, $id ) );
     }
 

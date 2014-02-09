@@ -26,6 +26,7 @@ class ClassMap
         if( !$model ) {
             $model = substr( $class, strrpos( $class, '\\' )+1 );
         }
+        $model = $this->prepareModel( $model );
         $this->modelClass[ $model ] = $class;
         $this->classModel[ $class ] = $model;
     }
@@ -38,6 +39,7 @@ class ClassMap
      */
     public function getClass( $model )
     {
+        $model = $this->prepareModel( $model );
         return isset( $this->modelClass[$model] ) ? $this->modelClass[$model]: $model;
     }
 
@@ -48,6 +50,14 @@ class ClassMap
     public function getModel( $class )
     {
         return isset( $this->classModel[$class] ) ? $this->classModel[$class]: $class;
+    }
+
+    /**
+     * @param string $model
+     * @return string
+     */
+    protected function prepareModel( $model ) {
+        return strtolower( $model );
     }
 
 }
