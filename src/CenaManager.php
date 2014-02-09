@@ -162,6 +162,14 @@ class CenaManager
     }
 
     /**
+     * @param object $entity
+     */
+    public function delEntity( $entity )
+    {
+        $this->ema->deleteEntity( $entity );
+    }
+
+    /**
      * @param $entity
      * @param $data
      */

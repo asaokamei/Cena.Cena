@@ -28,6 +28,12 @@ interface EmAdapterInterface
     public function findEntity( $class, $id );
 
     /**
+     * @param object $entity
+     * @return mixed
+     */
+    public function deleteEntity( $entity );
+
+    /**
      * get id value of the entity.
      * 
      * @param object $entity
