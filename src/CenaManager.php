@@ -56,6 +56,14 @@ class CenaManager
     }
 
     /**
+     * clears the EntityManager
+     */
+    public function clear()
+    {
+        $this->ema->clear();
+    }
+
+    /**
      * @return EmAdapterInterface
      */
     public function getEntityManager()

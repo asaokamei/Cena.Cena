@@ -14,6 +14,11 @@ interface EmAdapterInterface
     public function save();
 
     /**
+     * clears the entity cache. 
+     */
+    public function clear();
+
+    /**
      * @param       $class
      * @param array $data
      * @return object
