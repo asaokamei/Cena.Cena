@@ -78,6 +78,9 @@ class Process
             if( isset( $info['prop'] ) ) {
                 $this->cm->assign( $entity, $info['prop'] );
             }
+            if( isset( $info['link'] ) ) {
+                $this->cm->relate( $entity, $info['link'] );
+            }
         }
         return $isValid;
     }

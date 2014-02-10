@@ -179,6 +179,25 @@ class CenaManager
     }
 
     /**
+     * @param object $entity
+     * @param array  $data
+     */
+    public function relate( $entity, $data )
+    {
+        foreach( $data as $name => $target ) {
+            
+            if( is_string( $target ) ) {
+                $target = $this->fetch( $target );
+            } elseif( is_array( $target ) ) {
+                foreach( $target as $k => $t ) {
+                    $target[$k] = $this->fetch($t);
+                }
+            }
+            $this->ema->relate( $entity, $name, $target );
+        }
+    }
+
+    /**
      * get cenaID from an entity object.
      *
      * @param $entity
