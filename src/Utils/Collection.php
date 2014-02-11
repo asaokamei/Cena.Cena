@@ -29,6 +29,15 @@ class Collection implements \ArrayAccess, \Countable, \IteratorAggregate
     }
 
     /**
+     * 
+     */
+    public function clear()
+    {
+        $this->cenaEntities = array();
+        $this->entityCena   = array();
+    }
+    
+    /**
      * @param $cenaId
      * @return null|object
      */

@@ -60,6 +60,7 @@ class CenaManager
      */
     public function clear()
     {
+        $this->collection->clear();
         $this->ema->clear();
     }
 
@@ -98,6 +99,9 @@ class CenaManager
     {
         if( $cenaId ) {
             $this->collection->register( $cenaId, $entity );
+            return $cenaId;
+        }
+        if( $cenaId = $this->collection->findCenaId( $entity ) ) {
             return $cenaId;
         }
         if( $this->ema->isRetrieved( $entity ) ) {
@@ -234,7 +238,7 @@ class CenaManager
      */
     public function formName( $entity, $name, $type='prop' )
     {
-        $cenaId = $this->collection->findCenaId( $entity );
+        $cenaId = $this->register( $entity );
         $name   = $this->composer->makeFormName( $cenaId, $type, $name );
         return $name;
     }
