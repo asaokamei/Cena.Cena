@@ -17,6 +17,14 @@ class Process
     {
         $this->cm = $cm;
     }
+
+    /**
+     * @return array
+     */
+    public function getSource()
+    {
+        return $this->source;
+    }
     
     /**
      * @param array $source
@@ -24,32 +32,34 @@ class Process
      */
     public function setSource( $source )
     {
-        $this->source = $source;
-        $this->prepareSource();
+        $this->source = $this->prepareSource($source);
         return $this;
     }
 
     /**
      * auto detect source type.
-     * @return $this
+     *
+     * @param array $source
+     * @return array
      */
-    protected function prepareSource()
+    protected function prepareSource( $source )
     {
-        if( isset( $this->source[ $this->cm->cena ] ) ) {
+        if( isset( $source[ $this->cm->cena ] ) ) {
             // it is a post data...
-            $this->setPosts( $this->source[ $this->cm->cena ] );
+            return $this->convertPosts( $source[ $this->cm->cena ] );
         }
-        return $this;
+        return $source;
     }
 
     /**
      * set cena post data from html form.
      *
      * @param array $source
-     * @return $this
+     * @return array
      */
-    public function setPosts( $source )
+    protected function convertPosts( $source )
     {
+        $input = array();
         foreach( $source as $model => $types ) 
         {
             foreach( $types as $type => $ids ) 
@@ -57,11 +67,11 @@ class Process
                 foreach( $ids as $id => $info ) 
                 {
                     $cenaID = $this->cm->getComposer()->composeCenaId( $model, $type, $id );
-                    $this->source[ $cenaID ] = $info;
+                    $input[ $cenaID ] = $info;
                 }
             }
         }
-        return $this;
+        return $input;
     }
 
     /**
