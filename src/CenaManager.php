@@ -242,4 +242,16 @@ class CenaManager
         $name   = $this->composer->makeFormName( $cenaId, $type, $name );
         return $name;
     }
+
+    /**
+     * @param object $entity
+     * @return string
+     */
+    public function formBase( $entity )
+    {
+        $cenaId = $this->register( $entity );
+        $list = $this->composer->deComposeCenaId( $cenaId );
+        $form = $this->cena . '[' . implode( '][', $list ) . ']';
+        return $form;
+    }
 }
