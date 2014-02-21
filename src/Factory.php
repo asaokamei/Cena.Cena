@@ -37,15 +37,14 @@ class Factory
     }
 
     /**
-     * @return HtmlForms
+     * @param null|CenaManager $cm
      * @throws \RuntimeException
+     * @return HtmlForms
      */
-    public static function form()
+    public static function form( $cm=null )
     {
-        if( !self::$cm ) {
-            throw new \RuntimeException( 'factory CenaManager before creating HtmlForms' );
-        }
-        self::$form = new HtmlForms( self::$cm );
+        if( !$cm ) $cm = self::$cm;
+        self::$form = new HtmlForms( $cm );
         return self::$form;
     }
 }
