@@ -72,6 +72,36 @@ class HtmlForms implements \ArrayAccess
     }
 
     /**
+     * @param $value
+     * @return string
+     */
+    public function h( $value )
+    {
+        if( is_object( $value ) && method_exists( $value, '__toString' ) ) {
+            $value = (string) $value;
+        }
+        if( is_string( $value ) ) {
+            $value = htmlspecialchars( $value, ENT_QUOTES, 'UTF-8' );
+        }
+        return $value;
+    }
+
+    /**
+     * @param $method
+     * @param $args
+     * @return mixed
+     * @throws \RuntimeException
+     */
+    public function __call( $method, $args )
+    {
+        if( !method_exists( $this->entity, $method ) ) {
+            throw new \RuntimeException( 'method does not exist: '.$method );
+        }
+        $value = call_user_func_array( array( $this->entity, $method ), $args );
+        $value = $this->h( $value );
+        return $value;
+    }
+    /**
      * Whether a offset exists
      * @param mixed $offset    An offset to check for.
      * @return boolean true on success or false on failure.
@@ -90,12 +120,7 @@ class HtmlForms implements \ArrayAccess
     public function offsetGet( $offset )
     {
         $value = $this->get($offset);
-        if( is_object( $value ) && method_exists( $value, '__toString' ) ) {
-            $value = (string) $value;
-        }
-        if( is_string( $value ) ) {
-            $value = htmlspecialchars( $value, ENT_QUOTES, 'UTF-8' );
-        }
+        $value = $this->h( $value );
         return $value;
     }
 
