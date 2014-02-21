@@ -5,6 +5,7 @@ use Cena\Cena\EmAdapter\EmAdapterInterface;
 use Cena\Cena\Utils\ClassMap;
 use Cena\Cena\Utils\Collection;
 use Cena\Cena\Utils\Composition;
+use Cena\Cena\Utils\HtmlForms;
 
 class Factory
 {
@@ -12,6 +13,11 @@ class Factory
      * @var CenaManager
      */
     public static  $cm;
+
+    /**
+     * @var HtmlForms
+     */
+    public static  $form;
 
     /**
      * factory method for CenaManager.
@@ -30,4 +36,16 @@ class Factory
         return self::$cm;
     }
 
+    /**
+     * @return HtmlForms
+     * @throws \RuntimeException
+     */
+    public static function form()
+    {
+        if( !self::$cm ) {
+            throw new \RuntimeException( 'factory CenaManager before creating HtmlForms' );
+        }
+        self::$form = new HtmlForms( self::$cm );
+        return self::$form;
+    }
 }
