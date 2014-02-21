@@ -9,6 +9,11 @@ use Cena\Cena\Utils\Composition;
 class Factory
 {
     /**
+     * @var CenaManager
+     */
+    public static  $cm;
+
+    /**
      * factory method for CenaManager.
      *
      * @param null|EmAdapterInterface $ema
@@ -16,13 +21,13 @@ class Factory
      */
     public static function cm( $ema=null )
     {
-        $cm = new CenaManager(
+        self::$cm = new CenaManager(
             new Composition(),
             new Collection(),
             new ClassMap()
         );
-        $cm->setEntityManager( $ema );
-        return $cm;
+        self::$cm->setEntityManager( $ema );
+        return self::$cm;
     }
 
 }
