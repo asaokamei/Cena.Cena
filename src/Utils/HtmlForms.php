@@ -87,6 +87,45 @@ class HtmlForms implements \ArrayAccess
     }
 
     /**
+     * @param $name
+     * @param $value
+     * @return string
+     */
+    public function isChecked( $name, $value )
+    {
+        if( $this->isEqualTo( $name, $value ) ) {
+            return ' checked="checked"';
+        }
+        return '';
+    }
+
+    /**
+     * @param $name
+     * @param $value
+     * @return string
+     */
+    public function isSelected( $name, $value )
+    {
+        if( $this->isEqualTo( $name, $value ) ) {
+            return ' selected="selected"';
+        }
+        return '';
+    }
+
+    /**
+     * @param $name
+     * @param $value
+     * @return bool
+     */
+    public function isEqualTo( $name, $value )
+    {
+        if( $this->get( $name ) == $value ) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
      * @param $method
      * @param $args
      * @return mixed
