@@ -87,6 +87,13 @@ class HtmlForms implements \ArrayAccess
     }
 
     /**
+     * @return bool
+     */
+    public function isRetrieved()
+    {
+        return $this->cm->getEntityManager()->isRetrieved( $this->entity );
+    }
+    /**
      * @param $name
      * @param $value
      * @return string
