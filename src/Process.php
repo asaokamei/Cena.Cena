@@ -32,7 +32,30 @@ class Process
      */
     public function setSource( $source )
     {
-        $this->source = $this->prepareSource($source);
+        $this->source = $source;
+        return $this;
+    }
+
+    /**
+     * @param string $model
+     * @param string $prop
+     * @throws \RuntimeException
+     * @return $this
+     */
+    public function cleanNew( $model, $prop )
+    {
+        if( !isset( $this->source[ $this->cm->cena ] ) ) {
+            throw new \RuntimeException( "cannot clean for non-Cena post input." );
+        }
+        foreach( $this->source[ $this->cm->cena ] as $modelName => $modelData ) {
+            if( $model != $modelName ) continue;
+            if( !isset( $modelData[ CenaManager::TYPE_NEW ] ) ) continue;
+            foreach( $modelData[ CenaManager::TYPE_NEW ] as $id => $info ) {
+                if( !isset( $info['prop'][$prop] ) || !$info['prop'][$prop] ) {
+                    unset( $this->source[ $this->cm->cena ][$modelName][CenaManager::TYPE_NEW][$id] );
+                }
+            } 
+        }
         return $this;
     }
 
@@ -80,6 +103,7 @@ class Process
      */
     public function process( $data=array() )
     {
+        $this->source = $this->prepareSource($this->source);
         if( !$data ) $data = $this->source;
         $isValid = true;
         foreach( $data as $cenaID => $info )
