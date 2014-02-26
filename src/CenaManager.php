@@ -201,8 +201,12 @@ class CenaManager
             if( is_string( $target ) ) {
                 $target = $this->fetch( $target );
             } elseif( is_array( $target ) ) {
-                foreach( $target as $k => $t ) {
-                    $target[$k] = $this->fetch($t);
+                if( !empty( $target ) ) {
+                    foreach( $target as $k => $t ) {
+                        if( $t ) {
+                            $target[$k] = $this->fetch($t);
+                        }
+                    }
                 }
             }
             $this->ema->relate( $entity, $name, $target );
