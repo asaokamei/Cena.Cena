@@ -33,35 +33,7 @@ class Process
     public function setSource( $source )
     {
         $this->source = $source;
-        $this->cleanEmptyLink();
         return $this;
-    }
-
-    /**
-     * clean up empty link for many-to-many association.
-     * seems like a hack... should think about it. 
-     * 
-     * @throws \RuntimeException
-     */
-    protected function cleanEmptyLink()
-    {
-        if( !isset( $this->source[ $this->cm->cena ] ) ) {
-            throw new \RuntimeException( "cannot clean for non-Cena post input." );
-        }
-        foreach( $this->source[ $this->cm->cena ] as &$modelData ) {
-            foreach( $modelData as &$typeData ) {
-                foreach( $typeData as &$idData ) {
-                    if( !isset( $idData['link'] ) ) continue;
-                    foreach( $idData['link'] as &$nameData ) {
-                        foreach( $nameData as $key => $cena_id ) {
-                            if( !$cena_id ) {
-                                unset( $nameData[$key] );
-                            }
-                        }
-                    }
-                }
-            }
-        }
     }
 
     /**
