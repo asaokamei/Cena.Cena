@@ -25,15 +25,27 @@ class Factory
      * @param null|EmAdapterInterface $ema
      * @return \Cena\Cena\CenaManager
      */
-    public static function cm( $ema=null )
+    public static function getCenaManager( $ema=null )
     {
-        self::$cm = new CenaManager(
+        if( !self::$cm ) {
+            self::$cm = self::buildCenaManager( $ema );
+        }
+        return self::$cm;
+    }
+
+    /**
+     * @param null|EmAdapterInterface $ema
+     * @return CenaManager
+     */
+    public static function buildCenaManager( $ema=null )
+    {
+        $cm = new CenaManager(
             new Composition(),
             new Collection(),
             new ClassMap()
         );
-        self::$cm->setEntityManager( $ema );
-        return self::$cm;
+        $cm->setEntityManager( $ema );
+        return $cm;
     }
 
     /**
@@ -41,10 +53,18 @@ class Factory
      * @throws \RuntimeException
      * @return HtmlForms
      */
-    public static function form( $cm=null )
+    public static function getHtmlForms( $cm=null )
     {
-        if( !$cm ) $cm = self::$cm;
-        self::$form = new HtmlForms( $cm );
+        if( !self::$form ) {
+            self::$form = self::buildHtmlForms( $cm );
+        }
         return self::$form;
+    }
+
+    public static function buildHtmlForms( $cm=null )
+    {
+        if( !$cm ) $cm = self::getCenaManager();
+        $form = new HtmlForms( $cm );
+        return $form;
     }
 }
