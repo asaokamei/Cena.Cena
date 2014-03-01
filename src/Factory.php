@@ -15,6 +15,11 @@ class Factory
     public static  $cm;
 
     /**
+     * @var Process
+     */
+    public static $process;
+    
+    /**
      * @var HtmlForms
      */
     public static  $form;
@@ -49,6 +54,26 @@ class Factory
     }
 
     /**
+     * @return Process
+     */
+    public static function getProcess()
+    {
+        if( !self::$process ) {
+            self::$process = self::buildProcess();
+        }
+        return self::$process;
+    }
+
+    /**
+     * @return Process
+     */
+    public static function buildProcess()
+    {
+        $process = new Process( self::getCenaManager() );
+        return $process;
+    }
+
+    /**
      * @param null|CenaManager $cm
      * @throws \RuntimeException
      * @return HtmlForms
@@ -61,6 +86,10 @@ class Factory
         return self::$form;
     }
 
+    /**
+     * @param null $cm
+     * @return HtmlForms
+     */
     public static function buildHtmlForms( $cm=null )
     {
         if( !$cm ) $cm = self::getCenaManager();
