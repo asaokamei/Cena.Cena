@@ -184,6 +184,18 @@ class CenaManager
     }
 
     /**
+     * @param object|string $entity
+     * @param array         $info
+     */
+    public function process( $entity, $info )
+    {
+        if( !is_object( $entity ) ) {
+            $entity = $this->fetch( $entity );
+        }
+        $this->manipulate->process( $entity, $info );
+    }
+
+    /**
      * @param object $entity
      */
     public function delEntity( $entity )

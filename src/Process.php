@@ -108,13 +108,7 @@ class Process
         $isValid = true;
         foreach( $data as $cenaID => $info )
         {
-            $entity = $this->cm->fetch( $cenaID );
-            if( isset( $info['prop'] ) ) {
-                $this->cm->assign( $entity, $info['prop'] );
-            }
-            if( isset( $info['link'] ) ) {
-                $this->cm->relate( $entity, $info['link'] );
-            }
+            $this->cm->process( $cenaID, $info );
         }
         return $isValid;
     }

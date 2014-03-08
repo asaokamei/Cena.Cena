@@ -49,7 +49,11 @@ class ManipulateEntity
      */
     public function process( $entity, $info )
     {
-        
+        foreach( $info as $manipulate => $data ) {
+            if( !isset( $this->methods[$manipulate] ) ) continue;
+            $method = $this->methods[$manipulate];
+            $this->$method( $entity, $data );
+        }
     }
 
     /**
