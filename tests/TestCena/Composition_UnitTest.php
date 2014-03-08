@@ -2,6 +2,7 @@
 namespace Tests\TestCena;
 
 use Cena\Cena\CenaManager;
+use Cena\Cena\EmAdapter\ManipulateEntity;
 use Cena\Cena\Utils\ClassMap;
 use Cena\Cena\Utils\Collection;
 use Cena\Cena\Utils\Composition;
@@ -20,7 +21,8 @@ class Composition_UnitTest extends \PHPUnit_Framework_TestCase
         $this->cm = new CenaManager(
             $this->c,
             new Collection(),
-            new ClassMap()
+            new ClassMap(),
+            new ManipulateEntity()
         );
     }
 

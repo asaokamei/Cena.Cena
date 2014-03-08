@@ -2,6 +2,7 @@
 namespace Cena\Cena;
 
 use Cena\Cena\EmAdapter\EmAdapterInterface;
+use Cena\Cena\EmAdapter\ManipulateEntity;
 use Cena\Cena\Utils\ClassMap;
 use Cena\Cena\Utils\Collection;
 use Cena\Cena\Utils\Composition;
@@ -47,7 +48,8 @@ class Factory
         $cm = new CenaManager(
             new Composition(),
             new Collection(),
-            new ClassMap()
+            new ClassMap(),
+            new ManipulateEntity()
         );
         $cm->setEntityManager( $ema );
         return $cm;

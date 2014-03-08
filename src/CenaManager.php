@@ -2,6 +2,7 @@
 namespace Cena\Cena;
 
 use Cena\Cena\EmAdapter\EmAdapterInterface;
+use Cena\Cena\EmAdapter\ManipulateEntity;
 use Cena\Cena\Utils\ClassMap;
 use Cena\Cena\Utils\Composition;
 use Cena\Cena\Utils\Collection;
@@ -35,16 +36,24 @@ class CenaManager
     protected $classMap;
 
     /**
+     * @var ManipulateEntity
+     */
+    protected $manipulate;
+
+    /**
      * @param Composition $composer
      * @param Collection  $collection
      * @param ClassMap    $classMap
+     * @param ManipulateEntity $manipulate
      */
-    public function __construct( $composer, $collection, $classMap )
+    public function __construct( $composer, $collection, $classMap, $manipulate )
     {
         $composer->setCenaManager( $this );
+        $manipulate->setCenaManager( $this );
         $this->composer   = $composer;
         $this->collection = $collection;
         $this->classMap   = $classMap;
+        $this->manipulate = $manipulate;
     }
 
     /**
@@ -53,6 +62,7 @@ class CenaManager
     public function setEntityManager( $ema )
     {
         $this->ema = $ema;
+        $this->manipulate->setEmAdapter( $ema );
     }
 
     /**
@@ -178,7 +188,7 @@ class CenaManager
      */
     public function delEntity( $entity )
     {
-        $this->ema->deleteEntity( $entity );
+        $this->manipulate->delEntity( $entity );
     }
 
     /**
@@ -187,7 +197,7 @@ class CenaManager
      */
     public function assign( $entity, $data )
     {
-        $this->ema->assign( $entity, $data );
+        $this->manipulate->assign( $entity, $data );
     }
 
     /**
@@ -196,21 +206,7 @@ class CenaManager
      */
     public function relate( $entity, $data )
     {
-        foreach( $data as $name => $target ) {
-            
-            if( is_string( $target ) ) {
-                $target = $this->fetch( $target );
-            } elseif( is_array( $target ) ) {
-                if( !empty( $target ) ) {
-                    foreach( $target as $k => $t ) {
-                        if( $t ) {
-                            $target[$k] = $this->fetch($t);
-                        }
-                    }
-                }
-            }
-            $this->ema->relate( $entity, $name, $target );
-        }
+        $this->manipulate->relate( $entity, $data );
     }
 
     /**
