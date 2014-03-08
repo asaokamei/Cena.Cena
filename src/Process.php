@@ -108,7 +108,7 @@ class Process
         $isValid = true;
         foreach( $data as $cenaID => $info )
         {
-            $this->cm->process( $cenaID, $info );
+            $isValid &= $this->cm->process( $cenaID, $info );
         }
         return $isValid;
     }
