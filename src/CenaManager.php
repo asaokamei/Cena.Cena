@@ -217,12 +217,25 @@ class CenaManager
             $this->collection->setErrors( $entity, $validator->getErrors() );
             return false;
         }
-        if( !$validator->verify() ) {
-            // the entity is not verified. set error and return false. 
-            $this->collection->setErrors( $entity, $validator->getErrors() );
-            return false;
-        }
         return true; // good!
+    }
+
+    /**
+     * verify that all the entities are valid. 
+     * 
+     * @return bool
+     */
+    public function verify()
+    {
+        $isValid = true;
+        foreach( $this->collection as $entity )
+        {
+            if( $validator = $this->classMap->getValidator( $entity ) ) {
+                $validator->setEntity( $entity );
+                $isValid &= $validator->verify();
+            }
+        }
+        return $isValid;
     }
 
     /**
