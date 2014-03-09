@@ -17,12 +17,17 @@ interface ValidatorInterface
     public function setEntity( $entity );
 
     /**
+     * @param array $input
+     * @return mixed
+     */
+    public function setInput( $input );
+
+    /**
      * validate the input.
      *
-     * @param array $input
      * @return array
      */
-    public function validate( $input );
+    public function validate();
 
     /**
      * verify that the entity is valid. 

@@ -210,7 +210,8 @@ class CenaManager
         }
         // validate the input value, and process it, anyway. 
         $validator->setEntity( $entity );
-        $info = $validator->validate( $info );
+        $validator->setInput( $info );
+        $info = $validator->validate();
         $this->manipulate->process( $entity, $info );
         if( !$validator->isValid() ) {
             // the input is invalid. set error and return false. 
