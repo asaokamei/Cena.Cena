@@ -49,13 +49,20 @@ abstract class DumbValidatorAbstract implements ValidatorInterface
     }
 
     /**
+     * @return array
+     */
+    public function getInput()
+    {
+        return $this->input;
+    }
+
+    /**
      * validate the input.
      *
      * @return array
      */
     public function validate()
     {
-        return $this->input;
     }
 
     /**

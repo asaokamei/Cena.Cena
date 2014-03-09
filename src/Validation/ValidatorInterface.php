@@ -25,7 +25,7 @@ interface ValidatorInterface
     /**
      * validate the input.
      *
-     * @return array
+     * @return 
      */
     public function validate();
 
@@ -35,6 +35,11 @@ interface ValidatorInterface
      * @return bool
      */
     public function verify();
+
+    /**
+     * @return array
+     */
+    public function getInput();
 
     /**
      * @return bool
