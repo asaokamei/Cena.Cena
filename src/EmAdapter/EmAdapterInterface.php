@@ -4,28 +4,33 @@ namespace Cena\Cena\EmAdapter;
 interface EmAdapterInterface
 {
     /**
+     * @api
      * @return mixed
      */
     public function em();
 
     /**
      * saves entities to database.
+     * @api
      */
     public function save();
 
     /**
-     * clears the entity cache. 
+     * clears the entity cache.
+     * @api
      */
     public function clear();
 
     /**
+     * @api
      * @param       $class
-     * @param array $data
+     * @param array $data   to-be-obsolete
      * @return object
      */
     public function newEntity( $class, $data=array() );
 
     /**
+     * @api
      * @param $class
      * @param $id
      * @return null|object
@@ -33,12 +38,14 @@ interface EmAdapterInterface
     public function findEntity( $class, $id );
 
     /**
+     * @api
      * @param object $entity
      * @return mixed
      */
     public function deleteEntity( $entity );
 
     /**
+     * @api
      * get id value of the entity.
      * 
      * @param object $entity
@@ -56,8 +63,8 @@ interface EmAdapterInterface
     public function getFieldValue( $entity, $key );
 
     /**
-     * get list of fields in an entity. 
-     * 
+     * get list of fields in an entity.
+     *
      * @param object $entity
      * @return array
      */
@@ -73,7 +80,8 @@ interface EmAdapterInterface
 
     /**
      * returns if the $entity object is marked as delete.
-     * 
+     *
+     * @api
      * @param object $entity
      * @return mixed
      */
@@ -81,7 +89,8 @@ interface EmAdapterInterface
 
     /**
      * returns if the $entity object is retrieved from data base. 
-     * 
+     *
+     * @api
      * @param $entity
      * @return mixed
      */
@@ -89,7 +98,7 @@ interface EmAdapterInterface
 
     /**
      * returns if the $object is a collection of entities or not. 
-     * 
+     *
      * @param object $object
      * @return mixed
      */
