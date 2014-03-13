@@ -1,6 +1,8 @@
 <?php
 namespace Cena\Cena\Utils;
 
+use Cena\Cena\Validation\ValidatorInterface;
+
 class ClassMap
 {
     /**
@@ -10,12 +12,20 @@ class ClassMap
     protected $modelClass = array();
 
     /**
-     * convet class name to model. 
+     * convert class name to model. 
      * 
      * @var array
      */
     protected $classModel = array();
 
+    /**
+     * @var ValidatorInterface[]
+     */
+    protected $validators;
+
+    // +----------------------------------------------------------------------+
+    //  manage class/model relationships. 
+    // +----------------------------------------------------------------------+
     /**
      * set model/class relation.
      * @param string      $class
@@ -60,4 +70,29 @@ class ClassMap
         return strtolower( $model );
     }
 
+    // +----------------------------------------------------------------------+
+    //  manage validator objects
+    // +----------------------------------------------------------------------+
+    /**
+     * @param string             $class
+     * @param ValidatorInterface $validator
+     */
+    public function setValidator( $class, $validator )
+    {
+        $class = $this->getClass( $class );
+        $this->validators[ $class ] = $validator;
+    }
+
+    /**
+     * @param $class
+     * @return ValidatorInterface|null
+     */
+    public function getValidator( $class )
+    {
+        if( is_object( $class ) ) {
+            $class = get_class( $class );
+        }
+        $class = $this->getClass( $class );
+        return isset( $this->validators[ $class ] ) ? $this->validators[ $class ]: null;
+    }
 }

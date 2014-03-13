@@ -18,6 +18,11 @@ class Collection implements \ArrayAccess, \Countable, \IteratorAggregate
     protected $entityCena = array();
 
     /**
+     * @var array
+     */
+    protected $errors;
+
+    /**
      * @param string $cenaId
      * @param object $entity
      */
@@ -91,6 +96,29 @@ class Collection implements \ArrayAccess, \Countable, \IteratorAggregate
         unset( $this->entityCena[ $objId ] );
     }
 
+    /**
+     * @param string|object $cenaId
+     * @param mixed $errors
+     */
+    public function setErrors( $cenaId, $errors )
+    {
+        if( is_object( $cenaId ) ) {
+            $cenaId = $this->findCenaId( $cenaId );
+        }
+        $this->errors[ $cenaId ] = $errors;
+    }
+
+    /**
+     * @param string|object $cenaId
+     * @return array|mixed
+     */
+    public function getErrors( $cenaId )
+    {
+        if( is_object( $cenaId ) ) {
+            $cenaId = $this->findCenaId( $cenaId );
+        }
+        return isset( $this->errors[ $cenaId ] ) ? $this->errors[ $cenaId ]: array();
+    }
     // +----------------------------------------------------------------------+
     //  for ArrayAccess and Iterator. 
     // +----------------------------------------------------------------------+

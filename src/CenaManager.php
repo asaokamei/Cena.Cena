@@ -6,6 +6,7 @@ use Cena\Cena\EmAdapter\ManipulateEntity;
 use Cena\Cena\Utils\ClassMap;
 use Cena\Cena\Utils\Composition;
 use Cena\Cena\Utils\Collection;
+use Cena\Cena\Validation\ValidatorInterface;
 
 class CenaManager
 {
@@ -101,6 +102,15 @@ class CenaManager
     }
 
     /**
+     * @param string             $class
+     * @param ValidatorInterface $validator
+     */
+    public function setValidator( $class, $validator )
+    {
+        $this->classMap->setValidator( $class, $validator );
+    }
+
+    /**
      * @param object      $entity
      * @param null|string $cenaId
      * @return string
@@ -186,13 +196,48 @@ class CenaManager
     /**
      * @param object|string $entity
      * @param array         $info
+     * @return bool
      */
     public function process( $entity, $info )
     {
         if( !is_object( $entity ) ) {
             $entity = $this->fetch( $entity );
         }
+        if( !$validator = $this->classMap->getValidator( $entity ) ) {
+            // no validation. process the input. 
+            $this->manipulate->process( $entity, $info );
+            return true;
+        }
+        // validate the input value, and process it, anyway. 
+        $validator->setEntity( $entity );
+        $validator->setInput( $info );
+        $validator->validate();
+        $info = $validator->getInput();
         $this->manipulate->process( $entity, $info );
+        if( !$validator->isValid() ) {
+            // the input is invalid. set error and return false. 
+            $this->collection->setErrors( $entity, $validator->getErrors() );
+            return false;
+        }
+        return true; // good!
+    }
+
+    /**
+     * verify that all the entities are valid. 
+     * 
+     * @return bool
+     */
+    public function verify()
+    {
+        $isValid = true;
+        foreach( $this->collection as $entity )
+        {
+            if( $validator = $this->classMap->getValidator( $entity ) ) {
+                $validator->setEntity( $entity );
+                $isValid &= $validator->verify();
+            }
+        }
+        return $isValid;
     }
 
     /**
