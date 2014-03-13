@@ -93,6 +93,28 @@ class HtmlForms implements \ArrayAccess
     {
         return $this->cm->getEntityManager()->isRetrieved( $this->entity );
     }
+
+    /**
+     * @return bool
+     */
+    public function isError()
+    {
+        if( $this->cm->getCollection()->getErrors( $this->getCenaId() ) ) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * @param $name
+     * @return null
+     */
+    public function getError( $name )
+    {
+        $errors = $this->cm->getCollection()->getErrors( $this->getCenaId() );
+        return array_key_exists( $name, $errors )? $errors[$name] : null;
+    }
+
     /**
      * @param $name
      * @param $value
