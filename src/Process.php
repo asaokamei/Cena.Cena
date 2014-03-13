@@ -60,6 +60,22 @@ class Process
     }
 
     /**
+     * clean up post input, except for specified models.
+     *
+     * @param $model
+     */
+    public function cleanExcept( $model )
+    {
+        $models = func_get_args();
+        if( empty( $models ) ) return;
+        foreach( $this->source[ $this->cm->cena ] as $modelName => $modelData ) {
+            if( !in_array( $modelName, $models ) ) {
+                unset( $this->source[ $this->cm->cena ][ $modelName ] );
+            }
+        }
+    }
+
+    /**
      * auto detect source type.
      *
      * @param array $source
