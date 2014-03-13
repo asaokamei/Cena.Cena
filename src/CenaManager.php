@@ -92,6 +92,14 @@ class CenaManager
     }
 
     /**
+     * @return Collection
+     */
+    public function getCollection()
+    {
+        return $this->collection;
+    }
+
+    /**
      * set model/class relation. 
      * @param string      $class
      * @param null|string $model
