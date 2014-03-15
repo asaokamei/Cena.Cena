@@ -46,6 +46,8 @@ abstract class DumbValidatorAbstract implements ValidatorInterface
     public function setEntity( $entity )
     {
         $this->entity = $entity;
+        $this->isValid = true;
+        $this->errors  = array();
     }
 
     /**
