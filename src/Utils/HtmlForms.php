@@ -125,16 +125,17 @@ class HtmlForms implements \ArrayAccess
     }
 
     /**
-     * @param $name
-     * @param $value
-     * @return string
+     * @param        $name
+     * @param string $class
+     * @return null|string
      */
-    public function isChecked( $name, $value )
+    public function getErrorMsg( $name, $class='error-msg' )
     {
-        if( $this->isEqualTo( $name, $value ) ) {
-            return ' checked="checked"';
+        $message = $this->getError( $name );
+        if( $message ) {
+            $message = "<span class=\"{$class}\">{$message}</span>";
         }
-        return '';
+        return $message;
     }
 
     /**
@@ -156,18 +157,6 @@ class HtmlForms implements \ArrayAccess
     public function selectIf( $bool )
     {
         if( $bool ) {
-            return ' selected="selected"';
-        }
-        return '';
-    }
-    /**
-     * @param $name
-     * @param $value
-     * @return string
-     */
-    public function isSelected( $name, $value )
-    {
-        if( $this->isEqualTo( $name, $value ) ) {
             return ' selected="selected"';
         }
         return '';
