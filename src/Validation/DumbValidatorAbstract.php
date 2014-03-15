@@ -1,6 +1,15 @@
 <?php
 namespace Cena\Cena\Validation;
 
+/**
+ * Class DumbValidatorAbstract
+ * 
+ * a dumb validation class that does NOT validate anything. 
+ * BUT it is important to use this as a starting class to 
+ * validate input for Cena. 
+ *
+ * @package Cena\Cena\Validation
+ */
 abstract class DumbValidatorAbstract implements ValidatorInterface
 {
     /**
@@ -40,6 +49,9 @@ abstract class DumbValidatorAbstract implements ValidatorInterface
     }
 
     /**
+     * set the input data from post or un-trusted source.
+     * example: $input = [ 'prop' => [], 'link' => [] ]
+     * 
      * @param array $input
      * @return mixed
      */
@@ -49,6 +61,8 @@ abstract class DumbValidatorAbstract implements ValidatorInterface
     }
 
     /**
+     * get the validated and filtered input data. 
+     * 
      * @return array
      */
     public function getInput()

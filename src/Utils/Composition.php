@@ -3,6 +3,13 @@ namespace Cena\Cena\Utils;
 
 use Cena\Cena\CenaManager;
 
+/**
+ * Class Composition
+ * 
+ * constructs and deconstructs cena ID related string.
+ *
+ * @package Cena\Cena\Utils
+ */
 class Composition
 {
     /**

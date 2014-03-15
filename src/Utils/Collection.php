@@ -3,6 +3,13 @@ namespace Cena\Cena\Utils;
 
 use Traversable;
 
+/**
+ * Class Collection
+ * 
+ * manages entity object. 
+ *
+ * @package Cena\Cena\Utils
+ */
 class Collection implements \ArrayAccess, \Countable, \IteratorAggregate
 {
     /**

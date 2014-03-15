@@ -1,6 +1,13 @@
 <?php
 namespace Cena\Cena\Validation;
 
+/**
+ * Class SimpleValidatorAbstract
+ * 
+ * an abstract class for a simple and basic validation methods. 
+ *
+ * @package Cena\Cena\Validation
+ */
 abstract class SimpleValidatorAbstract extends DumbValidatorAbstract
 {
     protected $originalInput;

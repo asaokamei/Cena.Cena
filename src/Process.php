@@ -1,6 +1,13 @@
 <?php
 namespace Cena\Cena;
 
+/**
+ * Class Process
+ * 
+ * a class for processing mass input, i.e. from html post. 
+ *
+ * @package Cena\Cena
+ */
 class Process
 {
     /**

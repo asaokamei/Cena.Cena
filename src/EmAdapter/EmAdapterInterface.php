@@ -1,6 +1,14 @@
 <?php
 namespace Cena\Cena\EmAdapter;
 
+/**
+ * Interface EmAdapterInterface
+ *
+ * EntityManager Adapter Interface;
+ * a common API for Entity Managers, such as Doctrine2.
+ *
+ * @package Cena\Cena\EmAdapter
+ */
 interface EmAdapterInterface
 {
     /**

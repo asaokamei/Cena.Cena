@@ -3,6 +3,13 @@ namespace Cena\Cena\Utils;
 
 use Cena\Cena\Validation\ValidatorInterface;
 
+/**
+ * Class ClassMap
+ * 
+ * manages PHP class name, Cena's model name, and validators. 
+ *
+ * @package Cena\Cena\Utils
+ */
 class ClassMap
 {
     /**

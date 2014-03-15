@@ -1,8 +1,13 @@
 <?php
 namespace Cena\Cena\EmAdapter;
 
-use Cena\Cena\CenaManager;
-
+/**
+ * Class ManipulateEntity
+ * 
+ * a generic class to manipulate an entity using EntityManager(Adapter). 
+ *
+ * @package Cena\Cena\EmAdapter
+ */
 class ManipulateEntity
 {
     /**
@@ -14,7 +19,14 @@ class ManipulateEntity
      * @var object
      */
     protected $entity;
-    
+
+    /**
+     * maps input's action to manipulation method name 
+     * that are converted during *process* method. 
+     * example: $methods = [ 'action' => 'method',  ]
+     * 
+     * @var array
+     */
     protected $methods = array(
         'prop' => 'assign',
         'link' => 'relate',
@@ -46,6 +58,8 @@ class ManipulateEntity
     }
 
     /**
+     * process the input for the entity. 
+     * 
      * @param array  $info
      */
     public function process( $info )
@@ -58,6 +72,7 @@ class ManipulateEntity
     }
 
     /**
+     * mark the entity as delete. 
      */
     public function delEntity()
     {
@@ -65,6 +80,8 @@ class ManipulateEntity
     }
 
     /**
+     * get a property value of $key from the entity. 
+     * 
      * @param string $key
      * @return mixed
      */
@@ -85,6 +102,8 @@ class ManipulateEntity
     }
 
     /**
+     * mass assign property values of the entity.
+     * 
      * @param $data
      */
     public function assign( $data )
@@ -96,6 +115,8 @@ class ManipulateEntity
     }
 
     /**
+     * sets property $key as $value of the entity. 
+     * 
      * @param string $key
      * @param mixed  $value
      * @return $this
@@ -120,6 +141,8 @@ class ManipulateEntity
     }
 
     /**
+     * mass assign links for the entity.
+     * 
      * @param array  $data
      */
     public function relate( $data )
@@ -131,6 +154,8 @@ class ManipulateEntity
     }
 
     /**
+     * set $name link (association, relation) from the entity to the $target entity. 
+     * 
      * @param $name
      * @param $target
      * @return $this
