@@ -181,4 +181,12 @@ class ManipulateEntity
         }
         return $name;
     }
+
+    /**
+     * @return bool
+     */
+    public function isDeleted()
+    {
+        return $this->ema->isDeleted( $this->entity );
+    }
 }

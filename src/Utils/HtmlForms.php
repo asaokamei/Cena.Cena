@@ -98,6 +98,14 @@ class HtmlForms implements \ArrayAccess
     /**
      * @return bool
      */
+    public function isDeleted()
+    {
+        return $this->cm->manipulate( $this->entity )->isDeleted();
+    }
+
+    /**
+     * @return bool
+     */
     public function isError()
     {
         if( $this->cm->getCollection()->getErrors( $this->getCenaId() ) ) {
@@ -129,6 +137,29 @@ class HtmlForms implements \ArrayAccess
         return '';
     }
 
+    /**
+     * @param $bool
+     * @return string
+     */
+    public function checkIf( $bool )
+    {
+        if( $bool ) {
+            return ' checked="checked"';
+        }
+        return '';
+    }
+
+    /**
+     * @param $bool
+     * @return string
+     */
+    public function selectIf( $bool )
+    {
+        if( $bool ) {
+            return ' selected="selected"';
+        }
+        return '';
+    }
     /**
      * @param $name
      * @param $value
