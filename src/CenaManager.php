@@ -50,7 +50,6 @@ class CenaManager
     public function __construct( $composer, $collection, $classMap, $manipulate )
     {
         $composer->setCenaManager( $this );
-        $manipulate->setCenaManager( $this );
         $this->composer   = $composer;
         $this->collection = $collection;
         $this->classMap   = $classMap;
@@ -221,6 +220,12 @@ class CenaManager
         if( !is_object( $entity ) ) {
             $entity = $this->fetch( $entity );
         }
+        $cm = $this;
+        array_walk_recursive( $info['link'], function(&$v) use($cm) {
+            if( is_string( $v ) ) {
+                $v = $cm->fetch( $v );
+            }
+        } );
         if( !$validator = $this->classMap->getValidator( $entity ) ) {
             // no validation. process the input. 
             $this->manipulate($entity)->process( $info );

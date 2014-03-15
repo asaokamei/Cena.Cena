@@ -11,11 +11,6 @@ class ManipulateEntity
     protected $ema;
 
     /**
-     * @var CenaManager
-     */
-    protected $cm;
-
-    /**
      * @var object
      */
     protected $entity;
@@ -38,14 +33,6 @@ class ManipulateEntity
     public function setEmAdapter( $ema )
     {
         $this->ema = $ema;
-    }
-
-    /**
-     * @param CenaManager $cm
-     */
-    public function setCenaManager( $cm )
-    {
-        $this->cm = $cm;
     }
 
     /**
@@ -150,15 +137,6 @@ class ManipulateEntity
      */
     public function link( $name, $target )
     {
-        if( is_string( $target ) ) {
-            $target = $this->cm->fetch( $target );
-        } elseif( is_array( $target ) ) {
-            foreach( $target as $key => $t ) {
-                if( is_string( $t ) ) {
-                    $target[$key] = $this->cm->fetch( $t );
-                }
-            }
-        }
         $method = 'set' . $this->makeBasicAccessor( $name );
         $this->entity->$method( $target );
         return $this;
