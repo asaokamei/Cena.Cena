@@ -32,10 +32,9 @@ interface EmAdapterInterface
     /**
      * @api
      * @param       $class
-     * @param array $data   to-be-obsolete
      * @return object
      */
-    public function newEntity( $class, $data=array() );
+    public function newEntity( $class );
 
     /**
      * @api
