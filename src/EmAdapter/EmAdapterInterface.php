@@ -61,22 +61,6 @@ interface EmAdapterInterface
     public function getId( $entity );
 
     /**
-     * get list of fields in an entity.
-     *
-     * @param object $entity
-     * @return array
-     */
-    public function getFieldList( $entity );
-
-    /**
-     * get list of fields in an entity.
-     *
-     * @param object $entity
-     * @return array
-     */
-    public function getRelationList( $entity );
-
-    /**
      * returns if the $entity object is marked as delete.
      *
      * @api
