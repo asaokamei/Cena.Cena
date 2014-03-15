@@ -119,14 +119,4 @@ interface EmAdapterInterface
      * @return mixed
      */
     public function assign( $entity, $data );
-
-    /**
-     * relate $entity with $target object by $name relation.
-     *
-     * @param object $entity
-     * @param string $name
-     * @param object $target
-     * @return mixed
-     */
-    public function relate( $entity, $name, $target );
 }
