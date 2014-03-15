@@ -220,12 +220,14 @@ class CenaManager
         if( !is_object( $entity ) ) {
             $entity = $this->fetch( $entity );
         }
-        $cm = $this;
-        array_walk_recursive( $info['link'], function(&$v) use($cm) {
-            if( is_string( $v ) ) {
-                $v = $cm->fetch( $v );
-            }
-        } );
+        if( isset( $info['link'] ) && !empty( $info['link'])) {
+            $cm = $this;
+            array_walk_recursive( $info['link'], function(&$v) use($cm) {
+                if( is_string( $v ) ) {
+                    $v = $cm->fetch( $v );
+                }
+            } );
+        }
         if( !$validator = $this->classMap->getValidator( $entity ) ) {
             // no validation. process the input. 
             $this->manipulate($entity)->process( $info );
