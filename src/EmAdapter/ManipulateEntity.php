@@ -14,6 +14,11 @@ class ManipulateEntity
      * @var CenaManager
      */
     protected $cm;
+
+    /**
+     * @var object
+     */
+    protected $entity;
     
     protected $methods = array(
         'prop' => 'assign',
@@ -45,77 +50,82 @@ class ManipulateEntity
 
     /**
      * @param object $entity
+     * @return $this
+     */
+    public function setEntity( $entity )
+    {
+        $this->entity = $entity;
+        return $this;
+    }
+
+    /**
      * @param array  $info
      */
-    public function process( $entity, $info )
+    public function process( $info )
     {
         foreach( $info as $manipulate => $data ) {
             if( !isset( $this->methods[$manipulate] ) ) continue;
             $method = $this->methods[$manipulate];
-            $this->$method( $entity, $data );
+            $this->$method( $data );
         }
     }
 
     /**
-     * @param object $entity
      */
-    public function delEntity( $entity )
+    public function delEntity()
     {
-        $this->ema->deleteEntity( $entity );
+        $this->ema->deleteEntity( $this->entity );
     }
 
     /**
-     * @param object $entity
      * @param string $key
      * @return mixed
      */
-    public function get( $entity, $key )
+    public function get( $key )
     {
         $method = 'get' . $this->makeBasicAccessor( $key );
-        if( method_exists( $entity, $method ) ) {
-            return $entity->$method();
+        if( method_exists( $this->entity, $method ) ) {
+            return $this->entity->$method();
         }
-        if( $entity instanceof \ArrayAccess && array_key_exists( $key, $entity ) ) {
-            return $entity[ $key ];
+        if( $this->entity instanceof \ArrayAccess && array_key_exists( $key, $this->entity ) ) {
+            return $this->entity[ $key ];
         }
-        if( property_exists( $entity, $key ) ) {
-            return $entity->$key;
+        if( property_exists( $this->entity, $key ) ) {
+            return $this->entity->$key;
         }
         // throw new \RuntimeException( "cannot set '{$key}' property of an entity" );
         return null;
     }
 
     /**
-     * @param $entity
      * @param $data
      */
-    public function assign( $entity, $data )
+    public function assign( $data )
     {
         foreach( $data as $key => $value )
         {
-            $this->set( $entity, $key, $value );
+            $this->set( $key, $value );
         }
     }
 
     /**
-     * @param object $entity
      * @param string $key
      * @param mixed  $value
      * @return $this
      */
-    public function set( $entity, $key, $value )
+    public function set( $key, $value )
     {
         $method = 'set' . $this->makeBasicAccessor( $key );
-        if( method_exists( $entity, $method ) ) {
-            $entity->$method( $value );
+        if( method_exists( $this->entity, $method ) ) {
+            $this->entity->$method( $value );
             return $this;
         }
-        if( $entity instanceof \ArrayAccess ) {
-            $entity[ $key ] = $value;
+        if( $this->entity instanceof \ArrayAccess ) {
+            $this->entity[ $key ] = $value;
             return $this;
         }
-        if( property_exists( $entity, $key ) ) {
-            $entity->$key = $value;
+        if( property_exists( $this->entity, $key ) ) {
+            $this->entity->$key = $value;
             return $this;
         }
         // throw new \RuntimeException( "cannot set '{$key}' property of an entity" );
@@ -123,23 +133,22 @@ class ManipulateEntity
     }
 
     /**
-     * @param object $entity
      * @param array  $data
      */
-    public function relate( $entity, $data )
+    public function relate( $data )
     {
         foreach( $data as $name => $target ) {
 
-            $this->link( $entity, $name, $target );
+            $this->link( $name, $target );
         }
     }
 
     /**
-     * @param $entity
      * @param $name
      * @param $target
+     * @return $this
      */
-    public function link( $entity, $name, $target )
+    public function link( $name, $target )
     {
         if( is_string( $target ) ) {
             $target = $this->cm->fetch( $target );
@@ -151,7 +160,8 @@ class ManipulateEntity
             }
         }
         $method = 'set' . $this->makeBasicAccessor( $name );
-        $entity->$method( $target );
+        $this->entity->$method( $target );
+        return $this;
     }
 
     /**

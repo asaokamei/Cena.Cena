@@ -100,6 +100,16 @@ class CenaManager
     }
 
     /**
+     * @param $entity
+     * @return ManipulateEntity
+     */
+    public function manipulate( $entity )
+    {
+        $this->manipulate->setEntity( $entity );
+        return $this->manipulate;
+    }
+
+    /**
      * set model/class relation. 
      * @param string      $class
      * @param null|string $model
@@ -213,7 +223,7 @@ class CenaManager
         }
         if( !$validator = $this->classMap->getValidator( $entity ) ) {
             // no validation. process the input. 
-            $this->manipulate->process( $entity, $info );
+            $this->manipulate($entity)->process( $info );
             return true;
         }
         // validate the input value, and process it, anyway. 
@@ -221,7 +231,7 @@ class CenaManager
         $validator->setInput( $info );
         $validator->validate();
         $info = $validator->getInput();
-        $this->manipulate->process( $entity, $info );
+        $this->manipulate( $entity )->process( $info );
         if( !$validator->isValid() ) {
             // the input is invalid. set error and return false. 
             $this->collection->setErrors( $entity, $validator->getErrors() );
@@ -246,32 +256,6 @@ class CenaManager
             }
         }
         return $isValid;
-    }
-
-    /**
-     * @param object $entity
-     */
-    public function delEntity( $entity )
-    {
-        $this->manipulate->delEntity( $entity );
-    }
-
-    /**
-     * @param $entity
-     * @param $data
-     */
-    public function assign( $entity, $data )
-    {
-        $this->manipulate->assign( $entity, $data );
-    }
-
-    /**
-     * @param object $entity
-     * @param array  $data
-     */
-    public function relate( $entity, $data )
-    {
-        $this->manipulate->relate( $entity, $data );
     }
 
     /**
