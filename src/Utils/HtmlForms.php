@@ -69,7 +69,7 @@ class HtmlForms implements \ArrayAccess
      */
     public function get( $name )
     {
-        return $this->cm->getEntityManager()->getFieldValue( $this->entity, $name );
+        return $this->cm->manipulate( $this->entity )->get( $name );
     }
 
     /**

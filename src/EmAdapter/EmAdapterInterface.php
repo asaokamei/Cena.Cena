@@ -61,15 +61,6 @@ interface EmAdapterInterface
     public function getId( $entity );
 
     /**
-     * get the value of the $name field.
-     *
-     * @param object $entity
-     * @param string $key
-     * @return mixed
-     */
-    public function getFieldValue( $entity, $key );
-
-    /**
      * get list of fields in an entity.
      *
      * @param object $entity
@@ -110,13 +101,4 @@ interface EmAdapterInterface
      * @return mixed
      */
     public function isCollection( $object );
-    
-    /**
-     * populate an entity with array data.
-     *
-     * @param object $entity
-     * @param array $data
-     * @return mixed
-     */
-    public function assign( $entity, $data );
 }
