@@ -10,7 +10,10 @@ namespace Cena\Cena\Validation;
  */
 abstract class SimpleValidatorAbstract extends DumbValidatorAbstract
 {
-    protected $originalInput;
+    protected $originalInput = array(
+        'prop' => [],
+        'link' => [],
+    );
     
     protected $messages = array(
         'encoding' => 'invalid character',
@@ -38,6 +41,15 @@ abstract class SimpleValidatorAbstract extends DumbValidatorAbstract
     public function validate()
     {
         return $this->input;
+    }
+
+    /**
+     * @param string $name
+     * @param mixed $value
+     */
+    public function useAsInput( $name, $value )
+    {
+        $this->originalInput[ 'prop' ][ $name ] = $value;
     }
 
     /**
