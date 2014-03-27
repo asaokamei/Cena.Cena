@@ -62,8 +62,11 @@ class Collection implements \ArrayAccess, \Countable, \IteratorAggregate
      * @param string $model
      * @return array
      */
-    public function findByModel( $model )
+    public function findByModel( $model=null )
     {
+        if( !$model ) {
+            return $this->cenaEntities;
+        }
         $found = array();
         foreach( $this->entityCena as $cenaID ) {
             list( $m, $type, $id ) = explode( '.', $cenaID );
