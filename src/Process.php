@@ -129,9 +129,18 @@ class Process
         $this->source = $this->prepareSource($this->source);
         if( !$data ) $data = $this->source;
         $isValid = true;
+        /*
+         * process all the input, foreach cena entity.
+         */
         foreach( $data as $cenaID => $info )
         {
             $isValid &= $this->cm->process( $cenaID, $info );
+        }
+        /*
+         * validate all the entities.
+         */
+        if( $isValid ) {
+            $isValid = $this->cm->verify();
         }
         return $isValid;
     }
