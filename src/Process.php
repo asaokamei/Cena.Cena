@@ -52,7 +52,7 @@ class Process
     public function cleanNew( $model, $prop )
     {
         if( !isset( $this->source[ $this->cm->cena ] ) ) {
-            throw new \RuntimeException( "cannot clean for non-Cena post input." );
+            return $this;
         }
         foreach( $this->source[ $this->cm->cena ] as $modelName => $modelData ) {
             if( $model != $modelName ) continue;
