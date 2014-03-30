@@ -84,11 +84,11 @@ abstract class DumbValidatorAbstract implements ValidatorInterface
     /**
      * verify that the entity is valid.
      *
-     * @return bool
+     * @return void
      */
     public function verify()
     {
-        return true;
+        return ;
     }
 
     /**
