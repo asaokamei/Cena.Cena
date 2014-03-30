@@ -259,9 +259,10 @@ class CenaManager
         {
             if( $validator = $this->classMap->getValidator( $entity ) ) {
                 $validator->setEntity( $entity );
-                $isValid &= $validator->verify();
+                $validator->verify();
                 if( !$validator->isValid() ) {
                     // the input is invalid. set error and return false.
+                    $isValid = false;
                     $this->collection->setErrors( $entity, $validator->getErrors() );
                 }
             }
