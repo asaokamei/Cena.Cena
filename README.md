@@ -1,84 +1,85 @@
 Cena.Cena
 =========
 
-Composite Entity Notation and Augmentation for PHP, is,
+Cena is "Composite Entity Notation and Augmentation", 
+a technology about text representation of entity objects state.
 
-*   A DSL/protocol for manipulating ORM entities...
+For each entity object, Cena represent it the following in text:
 
-*   for transporting entities over http, or even html forms,
+*   lifecycle (how it is generated),
+*   its properties, and
+*   relation with other entities. 
 
+Cena will simplifies various operations such as 
+database synchronization and complicated html forms. 
+
+Entity State and Text Representation
+------------------------------------
+
+Given that the class name of entities are "Model". 
+
+An entity is represented as a simple text, called CenaID. 
+For instance: ```Cena.model.new.1```, ```Cena.model.get.1```. 
+
+
+### Entity LifeCycles
+
+Create a new entity of Model.
+
+```
+// Cena.model.new.1
+$entity = new Model();
+```
+
+Retrieve an entity from a database. 
+
+```
+$entity = Model::findById(1);
+// Cena.model.get.1
+```
+
+### Entity's Properties
+
+To represent property values of an entity, just specify 
+property name following the CenaID.
+
+```
+Cena.model.new.1.prop.name = 'my name'
+Cena.model.get.1.prop.name = 'your name'
+```
+
+
+### Relation Between Entities.
+
+Cena uses CenaID to represent relations between entities. 
+
+```
+Cena.model.new.1.link.related = Cena.other.get.1
+```
+
+The above simple notation is almost equivalent with 
+the following PHP code.
+
+``` 
+$entity = new Model();
+$entity->setRelated( Other::findById(1) );
+```
+
+### Cena is Unique At...
+
+So, what are the differences between Cena and other similar 
+technologies? Honestly, I (the author) is not familiar with 
+other technologies yet, so I cannot be certain but...
+
+The following are (probably) the unique features of Cena.
+
+*   easy to describe new entities (Cena.model.new.1). 
+*   easy to manipulate many entities, new or existent. 
+*   easy to relate new entities (i.e. no primary key) with 
+    other entities.
 
 CenaManager
------------
+===========
 
-```php
-// set up CenaManager
-$cm = CenaManager::factory();
-$cm->setClass( 'MyModels\Task' ); // use MyModels\Task class as Task
-
-// get some Task entities.
-$task1 = $cm->getEntity( 'Task', 1 );
-$task2 = $cm->newEntity( 'Task' );
-$cm->assign( $task2, array( 'task' => 'new task' ) );
-$cm->relate( $task1, 'parent', $task2 );
-$cm->save();
-```
-
-
-A SubSet is a collection
-------------------------
-
-experimental and imaginary coding.
-
-```php
-// generate Task entities.
-$task1 = $cm->getEntity( 'Task', 1 );
-$task2 = $cm->newEntity( 'Task' ); // status is "active"...
-
-// create a new subset.
-$sub1  = $cm->subset( 'Task', array( 'status' => task::STATUS_ACTIVE ) );
-$sub1->register( $task2 );
-
-// set relation to all entities in the $sub1.
-$cm->relate( $sub1, 'parent', $task1 );
-
-```
-
-「Cena集合」というのを考えた場合...
-
-Cena集合のエンティティが何かを判断するのは最後に
-行う（Late Binding）のが望ましいとかんがえる。
-
-もし、relateが即時実行でDoctrine2などの実体に
-変換されるとなると、Late Bindingにならない。
-
-つまりリレーションはCena集合のオブジェクトの形で
-持っている必要がある。
-
-無理！
-遅延評価は諦めるか。
-
-すごそうだけど、今のところ実装大変そうだし、
-実用性も未知数なので無視します。
-
-
-Wishes (Laravel Style)
-----------------------
-
-###data manipulation.
-
-
-```php
-Cena::Task->fetch(1)->set( 'task' => 'got task' );
-Cena::Task->forge()->assign( array( 'task' => 'new task' ) );
-Cena::save();
-```
-
-relation.
-
-```php
-Cena::Task->forge(1)->relate( 'parent' => Cena::task->fetch(1) );
-Cena::save();
-```
-
+Currently, Doctrine2 can be used as a base ORM for Cena. 
 
