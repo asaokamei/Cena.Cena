@@ -189,4 +189,12 @@ class ManipulateEntity
     {
         return $this->ema->isDeleted( $this->entity );
     }
+
+    /**
+     * @return mixed
+     */
+    public function isRetrieved()
+    {
+        return $this->ema->isRetrieved( $this->entity );
+    }
 }
