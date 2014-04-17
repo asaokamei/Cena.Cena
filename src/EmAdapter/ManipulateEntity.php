@@ -162,6 +162,10 @@ class ManipulateEntity
      */
     public function link( $name, $target )
     {
+        if( $this->ema->relate( $this->entity, $name, $target ) ) {
+            // handled by the Ema's relation method. 
+            return $this;
+        }
         $method = 'set' . $this->makeBasicAccessor( $name );
         $this->entity->$method( $target );
         return $this;
