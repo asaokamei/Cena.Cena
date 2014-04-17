@@ -85,4 +85,15 @@ interface EmAdapterInterface
      * @return mixed
      */
     public function isCollection( $object );
+
+    /**
+     * relate the $object with $target as $name association. 
+     * return true if handled in this method, or return false. 
+     * 
+     * @param object $object
+     * @param string $name
+     * @param object $target
+     * @return bool
+     */
+    public function relate( $object, $name, $target );
 }
