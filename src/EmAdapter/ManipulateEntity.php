@@ -97,6 +97,9 @@ class ManipulateEntity
         if( property_exists( $this->entity, $key ) ) {
             return $this->entity->$key;
         }
+        if( method_exists( $this->entity, 'offsetGet' ) ) {
+            return $this->entity->$key;
+        }
         // throw new \RuntimeException( "cannot set '{$key}' property of an entity" );
         return null;
     }
