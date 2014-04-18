@@ -67,11 +67,15 @@ class Factory
     }
 
     /**
+     * @param null|CenaManager $cm
      * @return Process
      */
-    public static function buildProcess()
+    public static function buildProcess( $cm=null )
     {
-        $process = new Process( self::getCenaManager() );
+        if( !$cm ) {
+            $cm = self::getCenaManager();
+        }
+        $process = new Process( $cm );
         return $process;
     }
 
