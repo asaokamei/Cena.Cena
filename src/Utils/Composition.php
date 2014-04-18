@@ -69,10 +69,10 @@ class Composition
      */
     public function composeId( $id )
     {
-        if( is_string( $id ) ) {
-            return $id;
+        if( is_array( $id ) ) {
+            $id = implode( $this->splitId, $id );
         }
-        return implode( $this->splitId, $id );
+        return $id;
     }
 
     /**
