@@ -222,11 +222,12 @@ class CenaManager
         }
         if( isset( $info['link'] ) && !empty( $info['link'])) {
             $cm = $this;
-            array_walk_recursive( $info['link'], function(&$v) use($cm) {
+            $info['link'] = array_map( function($v) use($cm) {
                 if( is_string( $v ) ) {
                     $v = $cm->fetch( $v );
                 }
-            } );
+                return $v;
+            }, $info['link'] );
         }
         if( !$validator = $this->classMap->getValidator( $entity ) ) {
             // no validation. process the input. 
