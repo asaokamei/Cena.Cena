@@ -41,7 +41,9 @@ class ClassMap
     public function setClass( $class, $model=null )
     {
         if( !$model ) {
-            $model = substr( $class, strrpos( $class, '\\' )+1 );
+            $model = ( strpos( $class, '\\' ) === false ) ?
+                $class :
+                substr( $class, strrpos( $class, '\\' )+1 );
         }
         $model = $this->prepareModel( $model );
         $this->modelClass[ $model ] = $class;
