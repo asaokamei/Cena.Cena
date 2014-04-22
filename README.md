@@ -4,6 +4,17 @@ Cena.Cena
 Cena is "Composite Entity Notation and Augmentation", 
 a technology about text representation of entity objects state.
 
+### license
+
+GPLv2
+
+### patent
+
+patent pending. so, be careful when using this software... 
+
+About Cena
+----------
+
 For each entity object, Cena represent it the following in text:
 
 *   lifecycle (how it is generated),
