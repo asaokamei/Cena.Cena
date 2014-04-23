@@ -25,7 +25,7 @@ interface ValidatorInterface
     /**
      * validate the input.
      *
-     * @return 
+     * @return void
      */
     public function validate();
 

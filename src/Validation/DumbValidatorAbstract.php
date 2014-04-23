@@ -75,21 +75,16 @@ abstract class DumbValidatorAbstract implements ValidatorInterface
     /**
      * validate the input.
      *
-     * @return array
+     * @return void
      */
-    public function validate()
-    {
-    }
+    abstract public function validate();
 
     /**
      * verify that the entity is valid.
      *
      * @return void
      */
-    public function verify()
-    {
-        return ;
-    }
+    abstract public function verify();
 
     /**
      * @return bool

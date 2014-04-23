@@ -34,21 +34,15 @@ abstract class SimpleValidatorAbstract extends DumbValidatorAbstract
     }
 
     /**
-     * validate the input.
-     *
-     * @return array
-     */
-    public function validate()
-    {
-        return $this->input;
-    }
-
-    /**
      * @param string $name
      * @param mixed $value
      */
-    public function useAsInput( $name, $value )
+    public function useAsInput( $name, $value=null )
     {
+        if( func_num_args() == 1 ) {
+            $this->originalInput['prop'] = $name;
+            return;
+        }
         $this->originalInput[ 'prop' ][ $name ] = $value;
     }
 
