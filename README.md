@@ -10,7 +10,8 @@ GPLv2
 
 ### patent
 
-patent pending. so, be careful when using this software... 
+Patented in Japan (#4782895), and patent pending in the US. 
+so, please be careful when using this software... 
 
 About Cena
 ----------
