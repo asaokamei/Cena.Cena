@@ -56,10 +56,23 @@ abstract class SimpleValidatorAbstract extends DumbValidatorAbstract
      */
     protected function get( $name, $default='' )
     {
-        if( !array_key_exists( $name, $this->originalInput['prop'] ) ) {
+        if( is_object( $this->originalInput['prop'] ) ) {
+            if( isset( $this->originalInput['prop']->$name ) ) {
+                $value = $this->originalInput['prop']->$name;
+            }
+            elseif( $this->originalInput['prop'] instanceof \ArrayAccess ) {
+                $value = $this->originalInput['prop'][$name];
+            }
+            elseif( method_exists( $this->originalInput['prop'], $method = 'get'.ucwords($name)) ) {
+                $value = $this->originalInput['prop']->$method();
+            }
+        }
+        elseif( isset( $this->originalInput['prop'][$name] ) ) {
+            $value = $this->originalInput['prop'][$name];
+        }
+        if( !isset( $value ) ) {
             return $default;
         }
-        $value = $this->originalInput['prop'][$name];
         if( !$this->check_encoding( $value ) ) {
             $this->error( $name, $this->messages['encoding'] );
             return null;
@@ -118,7 +131,10 @@ abstract class SimpleValidatorAbstract extends DumbValidatorAbstract
      */
     protected function check_encoding( $value )
     {
-        return mb_check_encoding( $value, $this->encode );
+        if( is_string( $value ) ) {
+            return mb_check_encoding( $value, $this->encode );
+        }
+        return true;
     }
 
     /**
@@ -127,6 +143,9 @@ abstract class SimpleValidatorAbstract extends DumbValidatorAbstract
      */
     protected function check_required( $value )
     {
+        if( is_object( $value ) ) {
+            return true;
+        }
         return "" != "{$value}";
     }
 }
