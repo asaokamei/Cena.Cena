@@ -6,7 +6,7 @@ a technology about text representation of entity objects state.
 
 ### license
 
-GPLv2
+t.b.d.
 
 ### patent
 

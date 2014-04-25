@@ -6,7 +6,7 @@ Cenaは「Composite Entity Notation and Augmentation」の略で、
 
 ### ライセンス
 
-GPLv2
+t.b.d.
 
 ### パテント
 
