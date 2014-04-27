@@ -77,6 +77,25 @@ $entity = new Model();
 $entity->setRelated( Other::findById(1) );
 ```
 
+Protocol (tentative)
+--------------------
+
+current protocol looks like: 
+
+```json
+{
+  cenaID: {
+    prop: { field1: value1, field2: value2, ... },
+    link: { rel1: cenaID2, rel2: [ cenaID3, cenaID4,...],... }
+    error: { field5: message5, field6: message6,... }
+    info: {
+      orig-cenaID: OriginalCenaId,...
+    }
+  }
+}
+```
+
+
 ### Cena is Unique At...
 
 So, what are the differences between Cena and other similar 
