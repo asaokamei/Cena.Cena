@@ -21,6 +21,9 @@ class HtmlForms implements \ArrayAccess
      */
     protected $entity;
 
+    // +----------------------------------------------------------------------+
+    //  construction and entity object.
+    // +----------------------------------------------------------------------+
     /**
      * @param CenaManager $cm
      */
@@ -45,6 +48,31 @@ class HtmlForms implements \ArrayAccess
         return $this->entity;
     }
 
+    // +----------------------------------------------------------------------+
+    //  html forms
+    // +----------------------------------------------------------------------+
+    public function link( $key, $target=null )
+    {
+        $formName = $this->getFormName();
+        if( !$target ) {
+            $target = $this->getCenaId();
+        } elseif( is_object( $target ) && method_exists( $target, 'getCenaId' ) ) {
+            $target = $target->getCenaId();
+        } elseif( is_object( $target ) ) {
+            $target = $this->cm->cenaId( $target );
+        } elseif( is_string( $target ) ) {
+            $target = $this->h( $target );
+        }
+        else {
+            throw new \RuntimeException( 'cannot link to unknown target' );
+        }
+        $html = "<input type=\"hidden\" name=" . "\"{$formName}[link][{$key}]\" value=\"{$target}\">";
+        return $html;
+    }
+
+    // +----------------------------------------------------------------------+
+    //  get information from entity
+    // +----------------------------------------------------------------------+
     /**
      * @return string
      */
@@ -175,6 +203,9 @@ class HtmlForms implements \ArrayAccess
         return false;
     }
 
+    // +----------------------------------------------------------------------+
+    //  magic methods and ArrayAccess methods
+    // +----------------------------------------------------------------------+
     /**
      * @param $method
      * @param $args
@@ -235,4 +266,6 @@ class HtmlForms implements \ArrayAccess
     {
         throw new \RuntimeException( 'cannot unset value in HtmlForms object' );
     }
+
+    // +----------------------------------------------------------------------+
 }
