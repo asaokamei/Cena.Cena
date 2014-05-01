@@ -112,7 +112,7 @@ class HtmlForms implements \ArrayAccess
         }
         $options[ 'value' ] = $value;
         $options  = $this->buildHtmlOptions( $options );
-        $html = "<input type=" . "\"radio\" name=\"{$formName}[prop][status]\" {$options} />";
+        $html = "<input type=" . "\"radio\" name=\"{$formName}[prop][{$key}]\" {$options} />";
         return $html;
     }
 
@@ -128,15 +128,18 @@ class HtmlForms implements \ArrayAccess
     }
 
     /**
-     * html hidden tag to relate two entities.
+     * html hidden tag to relate to another entity.
      *
      * @param string $key
-     * @param null|string|object $target
-     * @return string
+     * @param string|object $target
+     * @param array $options
+     * @param string $type
      * @throws \RuntimeException
+     * @return string
      */
-    public function link( $key, $target=null )
+    public function link( $key, $target, $options=array(), $type='hidden' )
     {
+        $options  = $this->buildHtmlOptions( $options );
         $formName = $this->getFormName();
         if( !$target ) {
             $target = $this->getCenaId();
@@ -150,7 +153,26 @@ class HtmlForms implements \ArrayAccess
         else {
             throw new \RuntimeException( 'cannot link to unknown target' );
         }
-        $html = "<input type=\"hidden\" name=" . "\"{$formName}[link][{$key}]\" value=\"{$target}\">";
+        $html = "<input type=\"{$type}\" name=" . "\"{$formName}[link][{$key}]\" value=\"{$target}\" {$options} />";
+        return $html;
+    }
+
+    /**
+     * create reverse of the relation (i.e. target to this entity).
+     *
+     * @param string $key
+     * @param object $target
+     * @param array $options
+     * @param string $type
+     * @return string
+     */
+    public function linkReverse( $key, $target, $options=array(), $type='hidden' )
+    {
+        $cenaId = $this->getCenaId();
+        $entity = $this->entity;
+        $this->entity = $target;
+        $html = $this->link( $key, $cenaId, $options, $type );
+        $this->entity = $entity;
         return $html;
     }
 
