@@ -51,6 +51,14 @@ class HtmlForms implements \ArrayAccess
     // +----------------------------------------------------------------------+
     //  html forms
     // +----------------------------------------------------------------------+
+    /**
+     * html hidden tag to relate two entities.
+     *
+     * @param string $key
+     * @param null|string|object $target
+     * @return string
+     * @throws \RuntimeException
+     */
     public function link( $key, $target=null )
     {
         $formName = $this->getFormName();
@@ -68,6 +76,32 @@ class HtmlForms implements \ArrayAccess
         }
         $html = "<input type=\"hidden\" name=" . "\"{$formName}[link][{$key}]\" value=\"{$target}\">";
         return $html;
+    }
+
+    /**
+     * @param string $key
+     * @param array $options
+     * @return string
+     */
+    public function textArea( $key, $options=array() )
+    {
+        $formName = $this->getFormName();
+        $options  = $this->buildHtmlOptions( $options );
+        $value    = $this->get( $key );
+        $html = "<textarea name=\"{$formName}[prop][{$key}]\" {$options}>{$value}</textarea>";
+        return $html;
+    }
+
+    /**
+     * @param array $options
+     * @return string
+     */
+    protected function buildHtmlOptions( $options )
+    {
+        foreach( $options as $key => $value ) {
+            $options[$key] = "{$key}=\"{$value}\"";
+        }
+        return implode( ' ', $options );
     }
 
     // +----------------------------------------------------------------------+
