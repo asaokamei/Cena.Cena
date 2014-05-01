@@ -21,6 +21,11 @@ class HtmlForms implements \ArrayAccess
      */
     protected $entity;
 
+    /**
+     * @var array
+     */
+    protected $defaultHtmlOptions = array();
+
     // +----------------------------------------------------------------------+
     //  construction and entity object.
     // +----------------------------------------------------------------------+
@@ -72,6 +77,7 @@ class HtmlForms implements \ArrayAccess
      */
     public function text( $key, $options=array() )
     {
+        $options += $this->defaultHtmlOptions;
         $options['value'] = $this->get( $key );
         return $this->input( 'text', $key, $options );
     }
@@ -83,6 +89,7 @@ class HtmlForms implements \ArrayAccess
      */
     public function dateTime( $key, $options=array() )
     {
+        $options += $this->defaultHtmlOptions;
         $options['value'] = $this->get( $key );
         if( $options['value'] instanceof \DateTime ) {
             $options['value'] = $options['value']->format('Y-m-d\TH:i:s');
@@ -106,6 +113,17 @@ class HtmlForms implements \ArrayAccess
         $options[ 'value' ] = $value;
         $options  = $this->buildHtmlOptions( $options );
         $html = "<input type=" . "\"radio\" name=\"{$formName}[prop][status]\" {$options} />";
+        return $html;
+    }
+
+    /**
+     * @return string
+     */
+    public function deleteMeCheck()
+    {
+        $formName = $this->getFormName();
+        $checked = $this->checkIf( $this->isDeleted() );
+        $html = "<input type=" . "\"checkbox\" name=\"{$formName}[del]\" {$checked} value=\"1\" />";
         return $html;
     }
 
@@ -144,10 +162,20 @@ class HtmlForms implements \ArrayAccess
     public function textArea( $key, $options=array() )
     {
         $formName = $this->getFormName();
+        $options += $this->defaultHtmlOptions;
         $options  = $this->buildHtmlOptions( $options );
         $value    = $this->get( $key );
         $html = "<textarea name=\"{$formName}[prop][{$key}]\" {$options}>{$value}</textarea>";
         return $html;
+    }
+
+    /**
+     * @param string $key
+     * @param $value
+     */
+    public function setHtmlOptions( $key, $value )
+    {
+        $this->defaultHtmlOptions[$key] = $value;
     }
 
     /**
@@ -157,6 +185,8 @@ class HtmlForms implements \ArrayAccess
     protected function buildHtmlOptions( $options )
     {
         foreach( $options as $key => $value ) {
+            if( $value === false ) continue;
+            if( $value === true ) $value = $key;
             $options[$key] = "{$key}=\"{$value}\"";
         }
         return implode( ' ', $options );
