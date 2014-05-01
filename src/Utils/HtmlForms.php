@@ -52,6 +52,64 @@ class HtmlForms implements \ArrayAccess
     //  html forms
     // +----------------------------------------------------------------------+
     /**
+     * @param $type
+     * @param $key
+     * @param $options
+     * @return string
+     */
+    public function input( $type, $key, $options=array() )
+    {
+        $formName = $this->getFormName();
+        $options  = $this->buildHtmlOptions( $options );
+        $html = "<input type=" . "\"{$type}\" name=\"{$formName}[prop][{$key}]\" {$options} />";
+        return $html;
+    }
+
+    /**
+     * @param string $key
+     * @param array $options
+     * @return string
+     */
+    public function text( $key, $options=array() )
+    {
+        $options['value'] = $this->get( $key );
+        return $this->input( 'text', $key, $options );
+    }
+
+    /**
+     * @param string $key
+     * @param array $options
+     * @return string
+     */
+    public function dateTime( $key, $options=array() )
+    {
+        $options['value'] = $this->get( $key );
+        if( $options['value'] instanceof \DateTime ) {
+            $options['value'] = $options['value']->format('Y-m-d\TH:i:s');
+        }
+        return $this->input( 'datetime-local', $key, $options );
+    }
+
+    /**
+     * @param string $key
+     * @param string $value
+     * @param array $options
+     * @return string
+     */
+    public function radio( $key, $value, $options=array() )
+    {
+        $formName = $this->getFormName();
+        $currVal  = $this->get( $key );
+        if( $value == $currVal ) {
+            $options['checked'] = 'checked';
+        }
+        $options[ 'value' ] = $value;
+        $options  = $this->buildHtmlOptions( $options );
+        $html = "<input type=" . "\"radio\" name=\"{$formName}[prop][status]\" {$options} />";
+        return $html;
+    }
+
+    /**
      * html hidden tag to relate two entities.
      *
      * @param string $key
